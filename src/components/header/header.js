@@ -23,7 +23,10 @@ export default function Header() {
       <StatusBar />
       <View style={styles.header}>
         <View style={styles.logoHeader} onPress={toggleCart}>
-          <Image source={require('../../../assets/images/LOGO.png')} style={styles.logo}></Image>
+          <Image
+            source={require("../../../assets/images/LOGO.png")}
+            style={styles.logo}
+          ></Image>
           <Text style={styles.logoText}>Pizzaria dos Monkeys</Text>
         </View>
 
