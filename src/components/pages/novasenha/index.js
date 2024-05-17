@@ -103,7 +103,6 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   containerForm: {
-    marginTop: "3%",
     width: "80%",
     alignSelf: "center",
   },

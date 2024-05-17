@@ -7,12 +7,15 @@ import {
   TextInput,
   TouchableOpacity,
   Pressable,
-  Linking,
 } from "react-native";
 import { useState } from "react";
 import styles from "./style";
+import { useNavigation } from "@react-navigation/native";
+import * as Animatable from "react-native-animatable";
 
 export default function Formulario() {
+  const navigation = useNavigation();
+
   const [cpf, setCpf] = useState("");
   const [isTirarfoco, setTirarfoco] = useState(false);
 
@@ -39,17 +42,24 @@ export default function Formulario() {
     <Pressable style={styles.container}>
       <ImageBackground
         style={styles.fundo}
-        source={require("../../assets/FUNDO PROJETO.png")}
+        source={require("../../../../assets/images/FUNDO PROJETO.png")}
       >
-        <Image
-          style={styles.imagemMacaco}
-          source={require("../../assets/LOGO.png")}
-        ></Image>
+        <View>
+          <Animatable.Image
+            animation="flipInY"
+            source={require("../../../../assets/images/logo.png")}
+            style={{ width: "100%", marginTop: "10%" }}
+            resizeMode="contain"
+          />
+        </View>
         <Text style={styles.Titulo}>PIZZARIA DOS MONKEYS</Text>
 
-        <View style={styles.Containerform}>
+        <Animatable.View
+          delay={600}
+          animation="fadeInUp"
+          style={styles.Containerform}
+        >
           <Text style={styles.textodoinput}>CPF</Text>
-
           <TextInput
             style={styles.input}
             keyboardType="numeric"
@@ -70,25 +80,26 @@ export default function Formulario() {
             placeholder="*****"
           ></TextInput>
 
-          <TouchableOpacity style={styles.botao}>
-            <Text style={styles.textbotao}>ENTRAR</Text>
-          </TouchableOpacity>
+          <View style={styles.buttonContainer}>
+            <TouchableOpacity
+              style={styles.botao}
+              onPress={() => navigation.navigate("Home")}
+            >
+              <Text style={styles.textbotao}>Entrar</Text>
+            </TouchableOpacity>
 
-          <Text style={styles.esqueceusenha}>Esqueceu a senha?</Text>
-        </View>
-
+            <TouchableOpacity
+              style={styles.botao}
+              onPress={() => navigation.navigate("Novasenha")}
+            >
+              <Text style={styles.textbotao}>Esqueci a senha</Text>
+            </TouchableOpacity>
+          </View>
+        </Animatable.View>
         <View style={styles.line} />
-
         <Text style={styles.footer}>
           <Text>Não possui Login ? </Text>{" "}
-          <Text
-            style={styles.branco}
-            onPress={() => {
-              Linking.openURL("https://about.google/");
-            }}
-          >
-            Cadastre-se
-          </Text>
+          <Text style={styles.branco}>Cadastre-se</Text>
         </Text>
       </ImageBackground>
     </Pressable>

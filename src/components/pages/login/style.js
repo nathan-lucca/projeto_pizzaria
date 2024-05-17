@@ -41,8 +41,16 @@ const styles = StyleSheet.create({
     backgroundColor: "#9A2E00",
     padding: 15,
     borderRadius: 20,
-    width: "25%",
+    width: "40%",
+
   },
+  buttonContainer: {
+    flexDirection: 'row',
+    justifyContent: "space-around",
+    marginTop: "20%",
+    width: "100%",
+},
+
   textbotao: {
     color: "#fff",
     textAlign: "center",

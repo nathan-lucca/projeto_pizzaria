@@ -23,13 +23,7 @@ export default function BemVindo() {
         />
       </View>
 
-      <Animatable.View
-        delay={600}
-        animation="fadeInLeft"
-        style={styles.containerForm}
-      >
-      </Animatable.View>
-      <Animatable.View
+      <Animatable.View delay={600}
         animation="fadeInUp"
         style={[styles.containerForm]}>
         <Text style={styles.title}>Nome</Text>

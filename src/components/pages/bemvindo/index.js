@@ -28,7 +28,7 @@ export default function BemVindo() {
 
                     <TouchableOpacity
                         style={styles.buttonlogin}
-                        onPress={() => navigation.navigate('Novasenha')}>
+                        onPress={() => navigation.navigate('Login')}>
                         <Text style={styles.login}>Já possuo uma conta</Text>
                     </TouchableOpacity>
                 </View>
