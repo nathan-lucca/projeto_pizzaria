@@ -31,30 +31,27 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     padding: 15,
     borderRadius: 30,
-    marginTop: 15,
+    marginTop: 5,
     marginBottom: 15,
     color: "#fff",
     textAlign: "center",
   },
   botao: {
-    marginTop: 25,
     backgroundColor: "#9A2E00",
     padding: 15,
     borderRadius: 20,
     width: "40%",
-
   },
   buttonContainer: {
-    flexDirection: 'row',
+    flexDirection: "row",
     justifyContent: "space-around",
     marginTop: "20%",
     width: "100%",
-},
-
+  },
   textbotao: {
     color: "#fff",
     textAlign: "center",
-    fontSize: 13,
+    fontSize: 15,
   },
   textodoinput: {
     marginRight: 230,

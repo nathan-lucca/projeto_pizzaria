@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { View, Text, TouchableOpacity, StatusBar, Image } from "react-native";
 import Cart from "../menu-cart/cart.js";
 import styles from "./style.js";
-import cartJson from "../cartData.js";
 
 export default function Header() {
   const [cartCount, setCartCount] = useState(1);

@@ -2,41 +2,67 @@ import React from "react";
 import {
   Text,
   View,
-  Image,
   ImageBackground,
   TextInput,
   TouchableOpacity,
   Pressable,
+  Alert,
 } from "react-native";
 import { useState } from "react";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
+import { formatCpf } from "../../../functions/formatCpf";
 
-export default function Formulario() {
+export default function Login() {
   const navigation = useNavigation();
 
   const [cpf, setCpf] = useState("");
+  const [senha, setSenha] = useState("");
   const [isTirarfoco, setTirarfoco] = useState(false);
 
-  const formatCpf = (text) => {
-    // Removendo  todos os caracteres não numéricos
-    const removeText = text.replace(/[^\d]/g, "");
+  async function realizarLogin() {
+    try {
+      // AO INVES DESSE IP "192.168.100.14", COLOQUEM O IPV4 DE VOCÊS
+      const response = await fetch(`http://192.168.100.14:8080/usuario/login`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          // Passando o corpo da requisição para o banco de dados
+          cpfUsers: cpf,
+          senhaUsers: senha,
+        }),
+      });
 
-    // Limitando o texto a 11 caracteres
-    const limitedText = removeText.slice(0, 11);
+      // Se a resposta do servidor for 200 (OK), ou seja, OK
+      if (response.ok) {
+        // Armazenando o JSON enviado pela API
+        const data = await response.json();
 
-    // Adicionando os pontos e traço conforme o formato do CPF
-    const formattedText = limitedText.replace(
-      /(\d{3})(\d{3})(\d{3})(\d{2})/,
-      "$1.$2.$3-$4"
-    );
+        Alert.alert("Logado com sucesso!", data.message, [
+          {
+            text: "OK",
+            onPress: () => {
+              navigation.navigate("Home");
+            },
+          },
+          {
+            text: "Cancelar",
+            style: "cancel",
+          },
+        ]);
+      } else {
+        // Caso dê algum erro, armazena a mensagem do erro
+        const errorText = await response.text();
 
-    // Atualizando o estado com o CPF formatado
-    setCpf(formattedText);
-  };
-
-  // formulario
+        Alert.alert("Erro ao logar!", errorText);
+      }
+    } catch (error) {
+      console.error(`Erro ao realizar a consulta: ${error}`);
+    }
+  }
 
   return (
     <Pressable style={styles.container}>
@@ -65,8 +91,8 @@ export default function Formulario() {
             keyboardType="numeric"
             placeholderTextColor="#fff"
             value={cpf}
-            onChangeText={formatCpf}
-            placeholder={isTirarfoco ? "" : "000.000.000-00"}
+            onChangeText={(text) => setCpf(formatCpf(text))}
+            placeholder={isTirarfoco ? "" : "Digite seu CPF"}
             onFocus={() => setTirarfoco(true)}
             onBlur={() => setTirarfoco(false)}
           ></TextInput>
@@ -75,22 +101,24 @@ export default function Formulario() {
 
           <TextInput
             style={styles.input}
+            value={senha}
+            onChangeText={(text) => setSenha(text)}
             secureTextEntry={true}
             placeholderTextColor="#fff"
-            placeholder="*****"
+            placeholder="Digite sua senha"
           ></TextInput>
 
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.botao}
-              onPress={() => navigation.navigate("Home")}
+              onPress={() => realizarLogin()}
             >
               <Text style={styles.textbotao}>Entrar</Text>
             </TouchableOpacity>
 
             <TouchableOpacity
               style={styles.botao}
-              onPress={() => navigation.navigate("Novasenha")}
+              onPress={() => navigation.navigate("NovaSenha")}
             >
               <Text style={styles.textbotao}>Esqueci a senha</Text>
             </TouchableOpacity>
@@ -104,5 +132,4 @@ export default function Formulario() {
       </ImageBackground>
     </Pressable>
   );
-  // formulario
 }

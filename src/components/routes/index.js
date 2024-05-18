@@ -3,9 +3,8 @@ import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import BemVindo from "../pages/bemvindo/index.js";
 import Login from "../pages/login/login.js";
 import Cadastro from "../pages/cadastro/index.js";
-import Novasenha from "../pages/novasenha/index.js";
+import NovaSenha from "../pages/novasenha/index.js";
 import Home from "../pages/home/index.js";
-
 
 const Stack = createNativeStackNavigator();
 
@@ -31,12 +30,12 @@ export default function Routes() {
       />
 
       <Stack.Screen
-        name="Novasenha"
-        component={Novasenha}
+        name="NovaSenha"
+        component={NovaSenha}
         options={{ headerShown: false }}
       />
 
-<Stack.Screen
+      <Stack.Screen
         name="Home"
         component={Home}
         options={{ headerShown: false }}
