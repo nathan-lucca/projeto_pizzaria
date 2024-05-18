@@ -3,8 +3,10 @@ import { View, Text, Image, TouchableOpacity } from "react-native";
 import styles from "./style.js";
 
 const PizzaItem = ({ pizza, closeModal }) => {
+  console.log(pizza); // Deixa esse console.log pra trabalhamos o array e pegarmos os valores das coisas retornadas
+
   const [quantity, setQuantity] = useState(1);
-  const [selectedSize, setSelectedSize] = useState(pizza.sizes[0]); // Selecionando por padrão o primeiro tamanho de PIZZA
+  const [selectedSize, setSelectedSize] = useState(pizza.tamanhos[0]); // Selecionando por padrão o primeiro tamanho de PIZZA
   const [cart, setCart] = useState([]);
 
   const decreaseQuantity = () => {
@@ -22,25 +24,25 @@ const PizzaItem = ({ pizza, closeModal }) => {
     setQuantity(1); // Redefinindo a quantidade da pizza conforme eu altero o tamanho da PIZZA
   };
 
-  // Adicionando pizza ao carrinho temporariamente
-  const addToCart = () => {
-    setCart((prevCart) => {
-      const newCart = [
-        ...prevCart,
-        {
-          id: pizza.id,
-          name: pizza.name,
-          img: pizza.img,
-          size: selectedSize,
-          quantity: quantity,
-        },
-      ];
+  // Adicionando pizza ao carrinho temporariamente (DEIXA COMENTADO ISSO AQUI)
+  // const addToCart = () => {
+  //   setCart((prevCart) => {
+  //     const newCart = [
+  //       ...prevCart,
+  //       {
+  //         id: pizza.id,
+  //         name: pizza.name,
+  //         img: pizza.img,
+  //         size: selectedSize,
+  //         quantity: quantity,
+  //       },
+  //     ];
 
-      console.log(newCart);
+  //     console.log(newCart);
 
-      return newCart;
-    });
-  };
+  //     return newCart;
+  //   });
+  // };
 
   return (
     <View style={styles.container}>
@@ -49,14 +51,17 @@ const PizzaItem = ({ pizza, closeModal }) => {
       </TouchableOpacity>
       <View style={styles.pizzaWindowBody}>
         <View style={styles.pizzaBig}>
-          <Image source={pizza.img} style={styles.pizzaImage} />
+          <Image
+            source={{ uri: `${pizza.imagem}` }}
+            style={styles.pizzaImage}
+          />
         </View>
         <View style={styles.pizzaInfo}>
-          <Text style={styles.pizzaTitle}>{pizza.name}</Text>
-          <Text style={styles.pizzaInfoDesc}>{pizza.description}</Text>
+          <Text style={styles.pizzaTitle}>{pizza.nome}</Text>
+          <Text style={styles.pizzaInfoDesc}>{pizza.descricao}</Text>
           <Text style={styles.pizzaInfoSector}>Tamanhos</Text>
           <View style={styles.pizzaInfoSizes}>
-            {pizza.sizes.map((size, index) => (
+            {pizza.tamanhos.map((size, index) => (
               <TouchableOpacity
                 key={index}
                 style={[
@@ -65,7 +70,7 @@ const PizzaItem = ({ pizza, closeModal }) => {
                 ]}
                 onPress={() => handleSizePress(size)}
               >
-                <Text>{size.label}</Text>
+                <Text>{size.tamanho}</Text>
               </TouchableOpacity>
             ))}
           </View>
@@ -75,7 +80,7 @@ const PizzaItem = ({ pizza, closeModal }) => {
           <View style={styles.pizzaInfoPrice}>
             <Text style={styles.pizzaInfoActualPrice}>
               {/* Multiplicando o valor da pizza, conforme eu escolho a quantia */}
-              R$ {(selectedSize.price * quantity).toFixed(2)}
+              R$ {(selectedSize.valor * quantity).toFixed(2)}
             </Text>
             <View style={styles.pizzaInfoQtArea}>
               <TouchableOpacity onPress={decreaseQuantity}>
@@ -88,7 +93,7 @@ const PizzaItem = ({ pizza, closeModal }) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.pizzaInfoAddButton} onPress={addToCart}>
+        <TouchableOpacity style={styles.pizzaInfoAddButton}>
           <Text style={styles.pizzaInfoAddButtonText}>
             Adicionar ao carrinho
           </Text>
