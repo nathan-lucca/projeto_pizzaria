@@ -23,29 +23,29 @@ export default function Login() {
 
   async function realizarLogin() {
     try {
-      // AO INVES DESSE IP "192.168.100.14", COLOQUEM O IPV4 DE VOCÊS
       const response = await fetch(`http://192.168.100.14:8080/usuario/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          // Passando o corpo da requisição para o banco de dados
           cpfUsers: cpf,
           senhaUsers: senha,
         }),
       });
 
-      // Se a resposta do servidor for 200 (OK), ou seja, OK
       if (response.ok) {
-        // Armazenando o JSON enviado pela API
         const data = await response.json();
 
         Alert.alert("Logado com sucesso!", data.message, [
           {
             text: "OK",
             onPress: () => {
-              navigation.navigate("Home");
+              const infos_aluno = data.dados;
+
+              global.storage.save({ key: "infosUsuario", data: infos_aluno });
+
+              navigation.navigate("Home", { infos_aluno });
             },
           },
           {
@@ -54,7 +54,6 @@ export default function Login() {
           },
         ]);
       } else {
-        // Caso dê algum erro, armazena a mensagem do erro
         const errorText = await response.text();
 
         Alert.alert("Erro ao logar!", errorText);

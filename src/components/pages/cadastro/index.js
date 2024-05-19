@@ -23,7 +23,6 @@ export default function Cadastro() {
 
   async function realizarCadastro() {
     try {
-      // AO INVES DESSE IP "192.168.100.14", COLOQUEM O IPV4 DE VOCÊS
       const response = await fetch(
         `http://192.168.100.14:8080/usuario/cadastro`,
         {
@@ -32,7 +31,6 @@ export default function Cadastro() {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            // Passando o corpo da requisição para o banco de dados
             nomeUsers: name,
             cpfUsers: cpf,
             senhaUsers: senha,
@@ -41,9 +39,7 @@ export default function Cadastro() {
         }
       );
 
-      // Se a resposta do servidor for 201 (CREATED), ou seja, Criado
       if (response.ok) {
-        // Armazenando o JSON enviado pela API
         const data = await response.json();
 
         Alert.alert("Cadastrado com sucesso!", data.message, [
@@ -59,7 +55,6 @@ export default function Cadastro() {
           },
         ]);
       } else {
-        // Caso dê algum erro, armazena a mensagem do erro
         const errorText = await response.text();
 
         Alert.alert("Erro ao cadastrar!", errorText);

@@ -8,52 +8,82 @@ import {
   ScrollView,
 } from "react-native";
 import styles from "./style.js";
-import pizzaJson from "../pizzaData.js";
 
 const Cart = ({ isVisible, onClose }) => {
-  const [quantity, setQuantity] = useState(1);
-  const [subtotal, setSubtotal] = useState(0);
-  const [discount, setDiscount] = useState(0);
   const [total, setTotal] = useState(0);
+  const [cartItems, setCartItems] = useState([]);
+  const [usuario, setUsuario] = useState({});
 
   useEffect(() => {
-    calculateSubtotal();
-  }, []);
+    global.storage
+      .load({
+        key: "infosUsuario",
+      })
+      .then((data) => {
+        setUsuario(data);
+      })
+      .catch((err) => {
+        console.warn(err.message);
+      });
 
-  useEffect(() => {
-    if (isVisible) {
-      calculateSubtotal();
-    }
+    fetchCartItems().then((items) => {
+      const groupedItems = items.reduce((acc, item) => {
+        const key = item.pizza.nomePizza;
+
+        if (!acc[key]) {
+          acc[key] = {
+            ...item,
+            quantPizza: { [item.tamanhoPizza]: item.quantPizza },
+            valortotalItem: { [item.tamanhoPizza]: item.valortotalItem },
+          };
+        } else {
+          acc[key].quantPizza[item.tamanhoPizza] =
+            (acc[key].quantPizza[item.tamanhoPizza] || 0) + item.quantPizza;
+          acc[key].valortotalItem[item.tamanhoPizza] =
+            (acc[key].valortotalItem[item.tamanhoPizza] || 0) +
+            item.valortotalItem;
+        }
+
+        return acc;
+      }, {});
+
+      setCartItems(Object.values(groupedItems));
+
+      setTotal(
+        Object.values(groupedItems).reduce(
+          (acc, item) =>
+            acc +
+            Object.values(item.valortotalItem).reduce(
+              (acc, value) => acc + value,
+              0
+            ),
+          0
+        )
+      );
+    });
   }, [isVisible]);
 
-  const calculateSubtotal = () => {
-    let total = 0;
-    pizzaJson.forEach((pizzaItem) => {
-      total += pizzaItem.price * quantity;
-    });
-    setSubtotal(total);
-    applyDiscount(total);
-  };
+  const fetchCartItems = async () => {
+    try {
+      if (usuario) {
+        const response = await fetch(
+          `http://192.168.100.14:8080/cart/listar/${usuario.idUsers}`
+        );
 
-  const applyDiscount = (subtotal) => {
-    const discountAmount = subtotal * 0.1;
-    const discountedTotal = subtotal - discountAmount;
-    setDiscount(discountAmount);
-    setTotal(discountedTotal);
-  };
+        if (!response.ok) {
+          throw new Error("Erro ao listar itens do carrinho");
+        }
 
-  const decreaseQuantity = () => {
-    if (quantity > 1) {
-      setQuantity(quantity - 1);
+        const cartItems = await response.json();
+
+        return cartItems;
+      }
+    } catch (error) {
+      console.error("Erro ao listar itens do carrinho:", error);
     }
-  };
-
-  const increaseQuantity = () => {
-    setQuantity(quantity + 1);
   };
 
   const handleModalClose = () => {
-    setQuantity(1);
     onClose();
   };
 
@@ -72,54 +102,48 @@ const Cart = ({ isVisible, onClose }) => {
           >
             <Text>❌</Text>
           </TouchableOpacity>
-          <Text style={styles.title}>Suas Pizzas</Text>
+          <Text style={styles.title}>Seu Carrinho</Text>
           <View style={styles.cart}>
-            {pizzaJson.map((pizzaItem) => (
-              <View key={pizzaItem.id} style={styles.cartItem}>
-                <Image source={pizzaItem.img} style={styles.pizzaImage} />
+            {cartItems.map((cartItem, index) => (
+              <View key={index} style={styles.cartItem}>
+                <Image
+                  source={{
+                    uri: `data:image/png;base64,${cartItem.pizza.imagemPizza}`,
+                  }}
+                  style={styles.pizzaImage}
+                />
                 <View style={styles.pizzaDetails}>
-                  <Text style={styles.pizzaName}>{pizzaItem.name}</Text>
-                  <Text style={styles.pizzaLabel}>
-                    ({pizzaItem.sizes[0].label[0]})
+                  <Text style={styles.pizzaName}>
+                    {cartItem.pizza.nomePizza}
                   </Text>
+                  {Object.entries(cartItem.quantPizza).map(
+                    ([size, quantity]) => (
+                      <Text key={size} style={styles.pizzaLabel}>
+                        ({quantity}x {size})
+                      </Text>
+                    )
+                  )}
                 </View>
                 <View style={styles.pizzaInfoQtArea}>
-                  <TouchableOpacity onPress={decreaseQuantity}>
-                    <Text style={styles.pizzaInfoQtButton}>-</Text>
-                  </TouchableOpacity>
-                  <Text style={styles.pizzaInfoQt}>{quantity}</Text>
-                  <TouchableOpacity onPress={increaseQuantity}>
-                    <Text style={styles.pizzaInfoQtButton}>+</Text>
-                  </TouchableOpacity>
+                  <Text style={styles.pizzaInfoQt}>
+                    R${" "}
+                    {Object.values(cartItem.valortotalItem)
+                      .reduce((a, b) => a + b, 0)
+                      .toFixed(2)}
+                  </Text>
                 </View>
               </View>
             ))}
           </View>
-          <View style={styles.cartDetails}>
-            <View style={styles.cartTotalItem}>
-              <Text style={styles.cartTotalItemText}>Subtotal</Text>
-              <Text style={styles.cartTotalItemValue}>
-                R$ {subtotal.toFixed(2)}
-              </Text>
-            </View>
-            <View style={styles.cartTotalItem}>
-              <Text style={styles.cartTotalItemText}>Desconto (-10%)</Text>
-              <Text style={styles.cartTotalItemValue}>
-                R$ {discount.toFixed(2)}
-              </Text>
-            </View>
-            <View style={[styles.cartTotalItem, styles.totalBig]}>
-              <Text style={styles.cartTotalItemText}>Total</Text>
-              <Text style={styles.cartTotalItemValue}>
-                R$ {total.toFixed(2)}
-              </Text>
-            </View>
-            <TouchableOpacity style={styles.cartFinalizar}>
-              <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-                Finalizar a compra
-              </Text>
-            </TouchableOpacity>
+          <View style={styles.cartTotalItem}>
+            <Text style={styles.cartTotalItemText}>Total:</Text>
+            <Text style={styles.cartTotalItemValue}>R$ {total.toFixed(2)}</Text>
           </View>
+          <TouchableOpacity style={styles.cartFinalizar}>
+            <Text style={{ fontWeight: "bold", fontSize: 18 }}>
+              Finalizar a compra
+            </Text>
+          </TouchableOpacity>
         </View>
       </ScrollView>
     </Modal>

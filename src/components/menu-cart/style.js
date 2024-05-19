@@ -33,35 +33,14 @@ const styles = StyleSheet.create({
     color: "#FFF",
   },
   pizzaImage: {
-    width: 60,
-    height: 60,
-    marginRight: 20,
+    width: 70,
+    height: 70,
+    marginLeft: 10,
   },
   pizzaDetails: {
     width: "50%",
     justifyContent: "space-around",
-  },
-  cartItemQtArea: {
-    flexDirection: "row",
-    backgroundColor: "#FFF",
-    borderRadius: 10,
-    height: 30,
-  },
-  cartItemQtButton: {
-    borderWidth: 0,
-    backgroundColor: "transparent",
-    fontSize: 17,
-    outline: "none",
-    padding: 0,
-    paddingHorizontal: 10,
-    color: "#FFF",
-  },
-  cartItemQt: {
-    lineHeight: 30,
-    fontSize: 12,
-    fontWeight: "bold",
-    paddingHorizontal: 5,
-    color: "#FFF",
+    paddingLeft: 10,
   },
   cartTotalItem: {
     paddingVertical: 15,
@@ -74,14 +53,13 @@ const styles = StyleSheet.create({
   cartTotalItemText: {
     fontWeight: "bold",
     color: "#FFF",
+    fontSize: 25,
+    marginLeft: 15,
   },
   cartTotalItemValue: {
     color: "#FFF",
-  },
-  cartTotalItemBig: {
+    marginRight: 15,
     fontSize: 20,
-    color: "#FFF",
-    fontWeight: "bold",
   },
   cartFinalizar: {
     width: "100%",
@@ -101,12 +79,6 @@ const styles = StyleSheet.create({
     justifyContent: "center",
     alignItems: "center",
     color: "white",
-  },
-  pizzaInfoQtButton: {
-    padding: 15,
-    fontSize: 18,
-    color: "#000",
-    fontWeight: "bold",
   },
   pizzaInfoQt: {
     fontSize: 20,

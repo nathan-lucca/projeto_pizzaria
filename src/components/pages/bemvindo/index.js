@@ -1,5 +1,5 @@
 import React from "react";
-import { View, Text, StyleSheet, TouchableOpacity } from "react-native";
+import { View, Text, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
 import styles from "./style";
@@ -23,7 +23,7 @@ export default function BemVindo() {
         style={styles.containerForm}
       >
         <Text style={styles.title}>
-          Venha conhecer a melhor pizzaria dos macacos de caruaru
+          Venha conhecer a melhor Pizzaria dos Macacos de Caruaru
         </Text>
         <Text style={styles.text}>
           Faça seu cadastro e comece a fazer os pedidos
