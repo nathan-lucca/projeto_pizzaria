@@ -24,17 +24,17 @@ export default function Cadastro() {
   async function realizarCadastro() {
     try {
       const response = await fetch(
-        `http://192.168.100.14:8080/usuario/cadastro`,
+        `http://192.168.100.6:8080/usuario/cadastro`,
         {
           method: "POST",
           headers: {
             "Content-Type": "application/json",
           },
           body: JSON.stringify({
-            nomeUsers: name,
-            cpfUsers: cpf,
-            senhaUsers: senha,
-            repetirSenhaUsers: senha,
+            nomeUsers: `${name}`,
+            cpfUsers: `${cpf}`,
+            senhaUsers: `${senha}`,
+            repetirSenhaUsers: `${senha}`,
           }),
         }
       );

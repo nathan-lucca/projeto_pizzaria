@@ -23,14 +23,14 @@ export default function Login() {
 
   async function realizarLogin() {
     try {
-      const response = await fetch(`http://192.168.100.14:8080/usuario/login`, {
+      const response = await fetch(`http://192.168.100.6:8080/usuario/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          cpfUsers: cpf,
-          senhaUsers: senha,
+          cpfUsers: `${cpf}`,
+          senhaUsers: `${senha}`,
         }),
       });
 
@@ -41,11 +41,11 @@ export default function Login() {
           {
             text: "OK",
             onPress: () => {
-              const infos_aluno = data.dados;
+              const infos_usuario = data.dados;
 
-              global.storage.save({ key: "infosUsuario", data: infos_aluno });
+              global.storage.save({ key: "infosUsuario", data: infos_usuario });
 
-              navigation.navigate("Home", { infos_aluno });
+              navigation.navigate("Home", { infos_usuario });
             },
           },
           {
@@ -97,7 +97,6 @@ export default function Login() {
           ></TextInput>
 
           <Text style={styles.textodoinput}>Senha</Text>
-
           <TextInput
             style={styles.input}
             value={senha}
@@ -123,9 +122,11 @@ export default function Login() {
             </TouchableOpacity>
           </View>
         </Animatable.View>
+
         <View style={styles.line} />
+
         <Text style={styles.footer}>
-          <Text>Não possui Login ? </Text>{" "}
+          <Text>Não possui Login?</Text>{" "}
           <Text style={styles.branco}>Cadastre-se</Text>
         </Text>
       </ImageBackground>

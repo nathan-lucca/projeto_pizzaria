@@ -15,22 +15,21 @@ export default function Header() {
       })
       .then((data) => {
         setUsuario(data);
+        fetchCartCount(data.idUsers);
       })
       .catch((err) => {
         console.warn(err.message);
       });
-
-    fetchCartCount;
-
-    const intervalId = setInterval(fetchCartCount, 1000);
-
-    return () => clearInterval(intervalId);
   }, []);
 
-  const fetchCartCount = async () => {
+  const fetchCartCount = async (userId) => {
+    if (!userId) {
+      return;
+    }
+
     try {
       const response = await fetch(
-        `http://192.168.100.14:8080/cart/listar/${usuario.idUsers}`,
+        `http://192.168.100.6:8080/cart/listar/${Number(userId)}`,
         {
           method: "GET",
           headers: {

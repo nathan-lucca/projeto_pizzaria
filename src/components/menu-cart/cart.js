@@ -21,13 +21,30 @@ const Cart = ({ isVisible, onClose }) => {
       })
       .then((data) => {
         setUsuario(data);
+        fetchCartItems(data.idUsers);
       })
       .catch((err) => {
         console.warn(err.message);
       });
+  }, [isVisible]);
 
-    fetchCartItems().then((items) => {
-      const groupedItems = items.reduce((acc, item) => {
+  const fetchCartItems = async (userId) => {
+    if (!userId) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://192.168.100.6:8080/cart/listar/${Number(userId)}`
+      );
+
+      if (!response.ok) {
+        throw new Error("Erro ao listar itens do carrinho");
+      }
+
+      const cartItems = await response.json();
+
+      const groupedItems = cartItems.reduce((acc, item) => {
         const key = item.pizza.nomePizza;
 
         if (!acc[key]) {
@@ -60,24 +77,6 @@ const Cart = ({ isVisible, onClose }) => {
           0
         )
       );
-    });
-  }, [isVisible]);
-
-  const fetchCartItems = async () => {
-    try {
-      if (usuario) {
-        const response = await fetch(
-          `http://192.168.100.14:8080/cart/listar/${usuario.idUsers}`
-        );
-
-        if (!response.ok) {
-          throw new Error("Erro ao listar itens do carrinho");
-        }
-
-        const cartItems = await response.json();
-
-        return cartItems;
-      }
     } catch (error) {
       console.error("Erro ao listar itens do carrinho:", error);
     }

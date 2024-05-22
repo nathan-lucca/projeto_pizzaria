@@ -37,16 +37,16 @@ const PizzaItem = ({ pizza, closeModal }) => {
 
   async function addToCart() {
     try {
-      const response = await fetch("http://192.168.100.14:8080/cart/cadastro", {
+      const response = await fetch("http://192.168.100.6:8080/cart/cadastro", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
         },
         body: JSON.stringify({
-          idUsers: `${usuario.idUsers}`,
-          idPizza: `${pizza.id}`,
+          idUsers: Number(usuario.idUsers),
+          idPizza: Number(pizza.id),
           tamanhoPizza: `${selectedSize.sigla}`,
-          quantPizza: `${quantity}`,
+          quantPizza: Number(quantity),
           valorTotalCart: `${selectedSize.valor * quantity}`,
         }),
       });

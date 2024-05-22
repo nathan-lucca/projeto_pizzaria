@@ -6,15 +6,60 @@ import {
   TouchableOpacity,
   View,
   ImageBackground,
+  Alert,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 import styles from "./style";
+import { formatCpf } from "../../../functions/formatCpf";
 
 export default function NovaSenha() {
   const navigation = useNavigation();
 
   const [cpf, setCpf] = useState("");
   const [senha, setSenha] = useState("");
+  const [isTirarfoco, setTirarfoco] = useState(false);
+
+  async function realizarTrocaSenha() {
+    try {
+      const response = await fetch(
+        `http://192.168.100.6:8080/usuario/trocar_senha`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            cpfUsers: `${cpf}`,
+            senhaUsers: `${senha}`,
+            repetirSenhaUsers: `${senha}`,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        const data = await response.json();
+
+        Alert.alert("Senha Alterada com sucesso!", data.message, [
+          {
+            text: "OK",
+            onPress: () => {
+              navigation.navigate("Login");
+            },
+          },
+          {
+            text: "Cancelar",
+            style: "cancel",
+          },
+        ]);
+      } else {
+        const errorText = await response.text();
+
+        Alert.alert("Erro ao trocar a senha!", errorText);
+      }
+    } catch (error) {
+      console.error(`Erro ao realizar a consulta: ${error}`);
+    }
+  }
 
   return (
     <View style={styles.container}>
@@ -36,48 +81,46 @@ export default function NovaSenha() {
           animation="fadeInLeft"
           style={styles.containerForm}
         ></Animatable.View>
+
         <Animatable.View animation="fadeInUp" style={[styles.containerForm]}>
           <Text style={styles.title}>CPF</Text>
           <TextInput
-            placeholder="Digite seu CPF"
-            placeholderTextColor="#a1a1a1"
             style={styles.input}
-            value={cpf}
-            onChangeText={(text) => {
-              const numericValue = text.replace(/[^0-9]/g, "");
-
-              const limitedValue = numericValue.slice(0, 11);
-
-              setCpf(limitedValue);
-            }}
             keyboardType="numeric"
-          />
+            placeholderTextColor="#fff"
+            value={cpf}
+            onChangeText={(text) => setCpf(formatCpf(text))}
+            placeholder={isTirarfoco ? "" : "Digite seu CPF"}
+            onFocus={() => setTirarfoco(true)}
+            onBlur={() => setTirarfoco(false)}
+          ></TextInput>
 
           <Text style={styles.title}>NOVA SENHA</Text>
           <TextInput
-            placeholder="Digite sua nova senha"
-            placeholderTextColor="#a1a1a1"
             style={styles.input}
             value={senha}
             onChangeText={(text) => setSenha(text)}
             secureTextEntry={true}
-          />
+            placeholderTextColor="#fff"
+            placeholder="Digite sua nova senha"
+          ></TextInput>
 
           <Text style={styles.title}>CONFIRMAR SENHA</Text>
           <TextInput
-            placeholder="Confirme sua nova senha"
-            placeholderTextColor="#a1a1a1"
             style={styles.input}
             value={senha}
             onChangeText={(text) => setSenha(text)}
             secureTextEntry={true}
-          />
+            placeholderTextColor="#fff"
+            placeholder="Confirme sua nova senha"
+          ></TextInput>
+
           <View style={styles.buttonContainer}>
             <TouchableOpacity
               style={styles.button}
-              onPress={() => navigation.navigate("Login")}
+              onPress={() => realizarTrocaSenha()}
             >
-              <Text style={styles.login}>ALTERAR</Text>
+              <Text style={styles.alterar}>ALTERAR</Text>
             </TouchableOpacity>
           </View>
         </Animatable.View>
