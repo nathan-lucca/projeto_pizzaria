@@ -78,7 +78,7 @@ export default function Login() {
                 <View>
                     <Animatable.Image
                         animation="flipInY"
-                        source={require("../../../../assets/images/logo.png")}
+                        source={require("../../../../assets/images/LOGO.png")}
                         style={{ width: "100%", marginTop: "10%" }}
                         resizeMode="contain"
                     />

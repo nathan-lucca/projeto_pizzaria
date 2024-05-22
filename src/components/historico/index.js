@@ -1,7 +1,11 @@
 // HistoryScreen.js
-import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
-import styles from "./style.js";
+import React, { useState, useEffect } from 'react';
+import { View, Text, FlatList, ActivityIndicator, Image } from 'react-native';
+import styles from './style';
+import PizzaHawaiian from '../../../../assets/images/pizzas/Hawaiian_Pizzaa.png';
+import PizzaCalabresa from '../../../../assets/images/pizzas/pizza_calabresa.png';
+import PizzaMargarita from '../../../../assets/images/pizzas/Pizza_Margarita.png';
+import PizzaPeperon from '../../../../assets/images/pizzas/Pizza_Peperoni.png';
 
 const HistoryScreen = () => {
     const [historico, setHistorico] = useState([]);
@@ -12,52 +16,19 @@ const HistoryScreen = () => {
         const fetchHistorico = async () => {
             try {
                 // simulando um delay de carregamento
-                await new Promise((resolve) => setTimeout(resolve, 1000));
+                await new Promise(resolve => setTimeout(resolve, 1000));
 
-                // simulando ids
-                // alterar depois
+                // ids das pizzas
                 const data = [
-                    {
-                        id: 1,
-                        type: "Chocolate",
-                        price: 21.5,
-                        quantity: 2,
-                        size: "(P)",
-                        imageUrl:
-                            "https://forneriaoriginal.com/wp-content/uploads/2020/06/chocolate-ao-leite1.png",
-                    },
-                    {
-                        id: 2,
-                        type: "Calabresa",
-                        price: 18.99,
-                        quantity: 1,
-                        size: "(M)",
-                        imageUrl:
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ12EWyknP-zAXRVy-gIi9wA22qn6BBRFbmcLN37LQttA&s",
-                    },
-                    {
-                        id: 3,
-                        type: "Bacon",
-                        price: 22.0,
-                        quantity: 3,
-                        size: "(G)",
-                        imageUrl:
-                            "https://s3-sa-east-1.amazonaws.com/superimg/img.produtos/6455573/645/img_1200_1.png",
-                    },
-                    {
-                        id: 4,
-                        type: "portuguesa",
-                        price: 22.0,
-                        quantity: 8,
-                        size: "(G)",
-                        imageUrl:
-                            "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQ12EWyknP-zAXRVy-gIi9wA22qn6BBRFbmcLN37LQttA&s",
-                    },
+                    { id: 1, type: 'Chocolate', price: 21.50, quantity: 2, size: '(P)', image: PizzaHawaiian },
+                    { id: 2, type: 'Calabresa', price: 18.99, quantity: 1, size: '(M)', image: PizzaCalabresa },
+                    { id: 3, type: 'Bacon', price: 22.00, quantity: 3, size: '(G)', image: PizzaMargarita },
+                    { id: 4, type: 'Portuguesa', price: 22.00, quantity: 8, size: '(G)', image: PizzaPeperon },
                 ];
-
+                // caso houver erro aparecera essa msg
                 setHistorico(data);
             } catch (error) {
-                setError("Algo deu errado");
+                setError('Algo deu errado');
             } finally {
                 setLoading(false);
             }
@@ -68,19 +39,17 @@ const HistoryScreen = () => {
 
     const renderItem = ({ item }) => (
         <View style={styles.card}>
-            <Image source={{ uri: item.imageUrl }} style={styles.image} />
+            <Image source={item.image} style={styles.image} />
             <View style={styles.info}>
                 <Text style={styles.title}>Pizza: {item.type}</Text>
                 <Text>Quantidade: {item.quantity}</Text>
                 <Text>Tamanho: {item.size}</Text>
-                <Text style={styles.price}>
-                    Preço: R${item.price.toFixed(2)}
-                </Text>
+                <Text style={styles.price}>Preço: R${item.price.toFixed(2)}</Text>
             </View>
         </View>
     );
 
-    if (loading) {
+    if (loading) { // tela de carregamento
         return (
             <View style={styles.loadingContainer}>
                 <ActivityIndicator size="large" color="#f7bb06" />
@@ -104,7 +73,7 @@ const HistoryScreen = () => {
                     showsVerticalScrollIndicator={false}
                     data={historico}
                     renderItem={renderItem}
-                    keyExtractor={(item) => item.id.toString()}
+                    keyExtractor={item => item.id.toString()}
                 />
             </View>
         </View>

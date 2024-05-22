@@ -66,7 +66,7 @@ export default function Header() {
             <View style={styles.header}>
                 <View style={styles.logoHeader} onPress={toggleCart}>
                     <Image
-                        source={require("../../../assets/images/logo.png")}
+                        source={require("../../../assets/images/LOGO.png")}
                         style={styles.logo}
                     ></Image>
                     <Text style={styles.logoText}>Pizzaria dos Monkeys</Text>
