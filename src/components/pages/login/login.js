@@ -1,12 +1,12 @@
 import React from "react";
 import {
-  Text,
-  View,
-  ImageBackground,
-  TextInput,
-  TouchableOpacity,
-  Pressable,
-  Alert,
+    Text,
+    View,
+    ImageBackground,
+    TextInput,
+    TouchableOpacity,
+    Pressable,
+    Alert,
 } from "react-native";
 import { useState } from "react";
 import styles from "./style";
@@ -15,121 +15,129 @@ import * as Animatable from "react-native-animatable";
 import { formatCpf } from "../../../functions/formatCpf";
 
 export default function Login() {
-  const navigation = useNavigation();
+    const navigation = useNavigation();
 
-  const [cpf, setCpf] = useState("");
-  const [senha, setSenha] = useState("");
-  const [isTirarfoco, setTirarfoco] = useState(false);
+    const [cpf, setCpf] = useState("");
+    const [senha, setSenha] = useState("");
+    const [isTirarfoco, setTirarfoco] = useState(false);
 
-  async function realizarLogin() {
-    try {
-      const response = await fetch(`http://192.168.100.6:8080/usuario/login`, {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-        },
-        body: JSON.stringify({
-          cpfUsers: `${cpf}`,
-          senhaUsers: `${senha}`,
-        }),
-      });
+    async function realizarLogin() {
+        try {
+            const response = await fetch(
+                `http://10.0.0.102:8080/usuario/login`,
+                {
+                    method: "POST",
+                    headers: {
+                        "Content-Type": "application/json",
+                    },
+                    body: JSON.stringify({
+                        cpfUsers: `${cpf}`,
+                        senhaUsers: `${senha}`,
+                    }),
+                }
+            );
 
-      if (response.ok) {
-        const data = await response.json();
+            if (response.ok) {
+                const data = await response.json();
 
-        Alert.alert("Logado com sucesso!", data.message, [
-          {
-            text: "OK",
-            onPress: () => {
-              const infos_usuario = data.dados;
+                Alert.alert("Logado com sucesso!", data.message, [
+                    {
+                        text: "OK",
+                        onPress: () => {
+                            const infos_usuario = data.dados;
 
-              global.storage.save({ key: "infosUsuario", data: infos_usuario });
+                            global.storage.save({
+                                key: "infosUsuario",
+                                data: infos_usuario,
+                            });
 
-              navigation.navigate("Home", { infos_usuario });
-            },
-          },
-          {
-            text: "Cancelar",
-            style: "cancel",
-          },
-        ]);
-      } else {
-        const errorText = await response.text();
+                            navigation.navigate("Home", { infos_usuario });
+                        },
+                    },
+                    {
+                        text: "Cancelar",
+                        style: "cancel",
+                    },
+                ]);
+            } else {
+                const errorText = await response.text();
 
-        Alert.alert("Erro ao logar!", errorText);
-      }
-    } catch (error) {
-      console.error(`Erro ao realizar a consulta: ${error}`);
+                Alert.alert("Erro ao logar!", errorText);
+            }
+        } catch (error) {
+            console.error(`Erro ao realizar a consulta: ${error}`);
+        }
     }
-  }
 
-  return (
-    <Pressable style={styles.container}>
-      <ImageBackground
-        style={styles.fundo}
-        source={require("../../../../assets/images/FUNDO PROJETO.png")}
-      >
-        <View>
-          <Animatable.Image
-            animation="flipInY"
-            source={require("../../../../assets/images/logo.png")}
-            style={{ width: "100%", marginTop: "10%" }}
-            resizeMode="contain"
-          />
-        </View>
-        <Text style={styles.Titulo}>PIZZARIA DOS MONKEYS</Text>
-
-        <Animatable.View
-          delay={600}
-          animation="fadeInUp"
-          style={styles.Containerform}
-        >
-          <Text style={styles.textodoinput}>CPF</Text>
-          <TextInput
-            style={styles.input}
-            keyboardType="numeric"
-            placeholderTextColor="#fff"
-            value={cpf}
-            onChangeText={(text) => setCpf(formatCpf(text))}
-            placeholder={isTirarfoco ? "" : "Digite seu CPF"}
-            onFocus={() => setTirarfoco(true)}
-            onBlur={() => setTirarfoco(false)}
-          ></TextInput>
-
-          <Text style={styles.textodoinput}>Senha</Text>
-          <TextInput
-            style={styles.input}
-            value={senha}
-            onChangeText={(text) => setSenha(text)}
-            secureTextEntry={true}
-            placeholderTextColor="#fff"
-            placeholder="Digite sua senha"
-          ></TextInput>
-
-          <View style={styles.buttonContainer}>
-            <TouchableOpacity
-              style={styles.botao}
-              onPress={() => realizarLogin()}
+    return (
+        <Pressable style={styles.container}>
+            <ImageBackground
+                style={styles.fundo}
+                source={require("../../../../assets/images/FUNDO PROJETO.png")}
             >
-              <Text style={styles.textbotao}>Entrar</Text>
-            </TouchableOpacity>
+                <View>
+                    <Animatable.Image
+                        animation="flipInY"
+                        source={require("../../../../assets/images/logo.png")}
+                        style={{ width: "100%", marginTop: "10%" }}
+                        resizeMode="contain"
+                    />
+                </View>
+                <Text style={styles.Titulo}>PIZZARIA DOS MONKEYS</Text>
 
-            <TouchableOpacity
-              style={styles.botao}
-              onPress={() => navigation.navigate("NovaSenha")}
-            >
-              <Text style={styles.textbotao}>Esqueci a senha</Text>
-            </TouchableOpacity>
-          </View>
-        </Animatable.View>
+                <Animatable.View
+                    delay={600}
+                    animation="fadeInUp"
+                    style={styles.Containerform}
+                >
+                    <Text style={styles.textodoinput}>CPF</Text>
+                    <TextInput
+                        style={styles.input}
+                        keyboardType="numeric"
+                        placeholderTextColor="#fff"
+                        value={cpf}
+                        onChangeText={(text) => setCpf(formatCpf(text))}
+                        placeholder={isTirarfoco ? "" : "Digite seu CPF"}
+                        onFocus={() => setTirarfoco(true)}
+                        onBlur={() => setTirarfoco(false)}
+                    ></TextInput>
 
-        <View style={styles.line} />
+                    <Text style={styles.textodoinput}>Senha</Text>
+                    <TextInput
+                        style={styles.input}
+                        value={senha}
+                        onChangeText={(text) => setSenha(text)}
+                        secureTextEntry={true}
+                        placeholderTextColor="#fff"
+                        placeholder="Digite sua senha"
+                    ></TextInput>
 
-        <Text style={styles.footer}>
-          <Text>Não possui Login?</Text>{" "}
-          <Text style={styles.branco}>Cadastre-se</Text>
-        </Text>
-      </ImageBackground>
-    </Pressable>
-  );
+                    <View style={styles.buttonContainer}>
+                        <TouchableOpacity
+                            style={styles.botao}
+                            onPress={() => realizarLogin()}
+                        >
+                            <Text style={styles.textbotao}>Entrar</Text>
+                        </TouchableOpacity>
+
+                        <TouchableOpacity
+                            style={styles.botao}
+                            onPress={() => navigation.navigate("NovaSenha")}
+                        >
+                            <Text style={styles.textbotao}>
+                                Esqueci a senha
+                            </Text>
+                        </TouchableOpacity>
+                    </View>
+                </Animatable.View>
+
+                <View style={styles.line} />
+
+                <Text style={styles.footer}>
+                    <Text>Não possui Login?</Text>{" "}
+                    <Text style={styles.branco}>Cadastre-se</Text>
+                </Text>
+            </ImageBackground>
+        </Pressable>
+    );
 }
