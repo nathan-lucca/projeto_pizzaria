@@ -19,7 +19,7 @@ export default function Pizzas() {
     async function arrayPizzas() {
         try {
             const response = await fetch(
-                `http://10.0.0.102:8080/pizza/listar`,
+                `http://192.168.100.14:8080/pizza/listar`,
                 {
                     method: "GET",
                     headers: {

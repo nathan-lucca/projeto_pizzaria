@@ -24,7 +24,7 @@ export default function Cadastro() {
     async function realizarCadastro() {
         try {
             const response = await fetch(
-                `http://10.0.0.102:8080/usuario/cadastro`,
+                `http://192.168.100.14:8080/usuario/cadastro`,
                 {
                     method: "POST",
                     headers: {

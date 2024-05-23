@@ -24,7 +24,7 @@ export default function Login() {
     async function realizarLogin() {
         try {
             const response = await fetch(
-                `http://10.0.0.102:8080/usuario/login`,
+                `http://192.168.100.14:8080/usuario/login`,
                 {
                     method: "POST",
                     headers: {
