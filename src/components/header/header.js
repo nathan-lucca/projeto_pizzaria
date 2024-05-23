@@ -2,6 +2,7 @@ import React, { useState, useEffect } from "react";
 import { View, Text, TouchableOpacity, StatusBar, Image } from "react-native";
 import Cart from "../menu-cart/cart.js";
 import styles from "./style.js";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Header() {
   const [cartCount, setCartCount] = useState(0);
@@ -31,7 +32,7 @@ export default function Header() {
 
     try {
       const response = await fetch(
-        `http://192.168.100.14:8080/cart/listar/${Number(userId)}`,
+        `http://192.168.0.18:8080/cart/listar/${Number(userId)}`,
         {
           method: "GET",
           headers: {
@@ -60,8 +61,9 @@ export default function Header() {
   const shouldDisplayCart = isCartOpen && cartCount >= 1;
 
   return (
-    <View>
-      <StatusBar />
+    <>
+    <StatusBar />
+    <SafeAreaView>
       <View style={styles.header}>
         <View style={styles.logoHeader} onPress={toggleCart}>
           <Image
@@ -77,6 +79,7 @@ export default function Header() {
         </TouchableOpacity>
       </View>
       {shouldDisplayCart && <Cart isVisible={isCartOpen} onClose={closeCart} />}
-    </View>
+    </SafeAreaView>
+    </>
   );
 }

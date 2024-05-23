@@ -2,12 +2,13 @@ import React from "react";
 import { Text, View, Button, Image } from "react-native";
 import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Image
         source={require("../../../../assets/images/LOGO.png")}
         style={styles.logo}
@@ -43,7 +44,7 @@ const HomeScreen = () => {
           </View>
         </View>
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 

@@ -8,6 +8,7 @@ import {
   ScrollView,
 } from "react-native";
 import styles from "./style.js";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const Cart = ({ isVisible, onClose }) => {
   const [total, setTotal] = useState(0);
@@ -37,7 +38,7 @@ const Cart = ({ isVisible, onClose }) => {
 
     try {
       const response = await fetch(
-        `http://192.168.100.14:8080/cart/listar/${Number(userId)}`
+        `http://192.168.0.18:8080/cart/listar/${Number(userId)}`
       );
 
       if (!response.ok) {
@@ -98,7 +99,7 @@ const Cart = ({ isVisible, onClose }) => {
       onRequestClose={handleModalClose}
     >
       <ScrollView>
-        <View style={styles.container}>
+        <SafeAreaView style={styles.container}>
           <TouchableOpacity
             style={styles.menuCloser}
             onPress={handleModalClose}
@@ -106,16 +107,16 @@ const Cart = ({ isVisible, onClose }) => {
             <Text>❌</Text>
           </TouchableOpacity>
           <Text style={styles.title}>Seu Carrinho</Text>
-          <View style={styles.cart}>
+          <SafeAreaView style={styles.cart}>
             {cartItems.map((cartItem, index) => (
-              <View key={index} style={styles.cartItem}>
+              <SafeAreaView key={index} style={styles.cartItem}>
                 <Image
                   source={{
                     uri: `data:image/png;base64,${cartItem.pizza.imagemPizza}`,
                   }}
                   style={styles.pizzaImage}
                 />
-                <View style={styles.pizzaDetails}>
+                <SafeAreaView style={styles.pizzaDetails}>
                   <Text style={styles.pizzaName}>
                     {cartItem.pizza.nomePizza}
                   </Text>
@@ -126,28 +127,28 @@ const Cart = ({ isVisible, onClose }) => {
                       </Text>
                     )
                   )}
-                </View>
-                <View style={styles.pizzaInfoQtArea}>
+                </SafeAreaView>
+                <SafeAreaView style={styles.pizzaInfoQtArea}>
                   <Text style={styles.pizzaInfoQt}>
                     R${" "}
                     {Object.values(cartItem.valortotalItem)
                       .reduce((a, b) => a + b, 0)
                       .toFixed(2)}
                   </Text>
-                </View>
-              </View>
+                </SafeAreaView>
+              </SafeAreaView>
             ))}
-          </View>
-          <View style={styles.cartTotalItem}>
+          </SafeAreaView>
+          <SafeAreaView style={styles.cartTotalItem}>
             <Text style={styles.cartTotalItemText}>Total:</Text>
             <Text style={styles.cartTotalItemValue}>R$ {total.toFixed(2)}</Text>
-          </View>
+          </SafeAreaView>
           <TouchableOpacity style={styles.cartFinalizar}>
             <Text style={{ fontWeight: "bold", fontSize: 18 }}>
               Fazer pagamento
             </Text>
           </TouchableOpacity>
-        </View>
+        </SafeAreaView>
       </ScrollView>
     </Modal>
   );

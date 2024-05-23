@@ -37,7 +37,7 @@ const PizzaItem = ({ pizza, closeModal }) => {
 
   async function addToCart() {
     try {
-      const response = await fetch("http://192.168.100.14:8080/cart/cadastro", {
+      const response = await fetch("http://192.168.0.18:8080/cart/cadastro", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

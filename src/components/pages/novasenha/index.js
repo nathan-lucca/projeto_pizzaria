@@ -22,7 +22,7 @@ export default function NovaSenha() {
     async function realizarTrocaSenha() {
         try {
             const response = await fetch(
-                `http://192.168.100.14:8080/usuario/trocar_senha`,
+                `http://192.168.0.18:8080/usuario/trocar_senha`,
                 {
                     method: "PUT",
                     headers: {

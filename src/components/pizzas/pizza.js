@@ -10,6 +10,7 @@ import {
 } from "react-native";
 import styles from "./style.js";
 import PizzaItem from "../modal-pizza/modal.js";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Pizzas() {
     const [selectedPizza, setSelectedPizza] = useState(null);
@@ -19,7 +20,7 @@ export default function Pizzas() {
     async function arrayPizzas() {
         try {
             const response = await fetch(
-                `http://192.168.100.14:8080/pizza/listar`,
+                `http://192.168.0.18:8080/pizza/listar`,
                 {
                     method: "GET",
                     headers: {
@@ -93,7 +94,7 @@ export default function Pizzas() {
 
     return (
         <ScrollView>
-            <View style={styles.container}>
+            <SafeAreaView style={styles.container}>
                 <Text style={styles.textTittle}>Pizzas</Text>
                 {dadosPizza.map((pizza) => (
                     <TouchableWithoutFeedback
@@ -119,7 +120,7 @@ export default function Pizzas() {
                         </View>
                     </TouchableWithoutFeedback>
                 ))}
-            </View>
+            </SafeAreaView>
             <Modal
                 animationType="slide"
                 visible={modalVisible}

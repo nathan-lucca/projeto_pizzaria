@@ -5,6 +5,7 @@ import PizzaHawaiian from "../../../../assets/images/pizzas/Hawaiian_Pizzaa.png"
 import PizzaCalabresa from "../../../../assets/images/pizzas/pizza_calabresa.png";
 import PizzaMargarita from "../../../../assets/images/pizzas/Pizza_Margarita.png";
 import PizzaPeperon from "../../../../assets/images/pizzas/Pizza_Peperoni.png";
+import { SafeAreaView } from "react-native-safe-area-context";
 
 const HistoryScreen = () => {
   const [historico, setHistorico] = useState([]);
@@ -94,7 +95,7 @@ const HistoryScreen = () => {
   }
 
   return (
-    <View style={styles.container}>
+    <SafeAreaView style={styles.container}>
       <Text style={styles.titleHistory}>SEUS PEDIDOS</Text>
       <View style={styles.contentContainer}>
         <FlatList
@@ -104,7 +105,7 @@ const HistoryScreen = () => {
           keyExtractor={(item) => item.id.toString()}
         />
       </View>
-    </View>
+    </SafeAreaView>
   );
 };
 
