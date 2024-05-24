@@ -9,6 +9,7 @@ import Cadastro from "../src/components/pages/cadastro";
 import NovaSenha from "../src/components/pages/novasenha";
 import Perfil from "../src/components/pages/perfil";
 import Historico from "../src/components/pages/historico";
+import AguardandoPagamento from "./components/pages/aguardandopagamento/index.js";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -99,6 +100,11 @@ export default function Routes() {
       <Stack.Screen
         name="Home"
         component={TabNavigator}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="AguardandoPagamento"
+        component={AguardandoPagamento}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>

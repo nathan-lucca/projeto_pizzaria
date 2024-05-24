@@ -1,16 +1,11 @@
 import React, { useState, useEffect } from "react";
-import {
-  View,
-  Text,
-  TouchableOpacity,
-  Image,
-  Modal,
-  ScrollView,
-} from "react-native";
+import { Text, TouchableOpacity, Image, Modal, ScrollView } from "react-native";
 import styles from "./style.js";
 import { SafeAreaView } from "react-native-safe-area-context";
+import { useNavigation } from "@react-navigation/native";
 
 const Cart = ({ isVisible, onClose }) => {
+  const navigation = useNavigation();
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState([]);
   const [usuario, setUsuario] = useState({});
@@ -23,7 +18,7 @@ const Cart = ({ isVisible, onClose }) => {
       .then((data) => {
         setUsuario(data);
         setInterval(() => {
-          fetchCartItems(data.idUsers);
+          atualizarItensCarrinho(data.idUsers);
         }, 1000);
       })
       .catch((err) => {
@@ -31,14 +26,14 @@ const Cart = ({ isVisible, onClose }) => {
       });
   }, [isVisible]);
 
-  const fetchCartItems = async (userId) => {
+  const atualizarItensCarrinho = async (userId) => {
     if (!userId) {
       return;
     }
 
     try {
       const response = await fetch(
-        `http://192.168.0.18:8080/cart/listar/${Number(userId)}`
+        `http://192.168.1.20:8080/cart/listar/${Number(userId)}`
       );
 
       if (!response.ok) {
@@ -91,6 +86,31 @@ const Cart = ({ isVisible, onClose }) => {
     onClose();
   };
 
+  const removerItemCarrinho = async (userId, pizzaId, tamanho) => {
+    try {
+      const response = await fetch(
+        `http://192.168.1.20:8080/cart/remover/${userId}/${pizzaId}/${tamanho}`,
+        {
+          method: "DELETE",
+        }
+      );
+
+      if (response.ok) {
+        atualizarItensCarrinho(userId); // Atualizar os itens do carrinho
+      } else {
+        throw new Error("Erro ao remover item do carrinho");
+      }
+    } catch (error) {
+      console.error("Erro ao remover item do carrinho:", error);
+    }
+  };
+
+  const calcularValorTotalItem = (valortotalItem) => {
+    return Object.values(valortotalItem)
+      .reduce((a, b) => a + b, 0)
+      .toFixed(2);
+  };
+
   return (
     <Modal
       visible={isVisible}
@@ -123,17 +143,25 @@ const Cart = ({ isVisible, onClose }) => {
                   {Object.entries(cartItem.quantPizza).map(
                     ([size, quantity]) => (
                       <Text key={size} style={styles.pizzaLabel}>
-                        ({quantity}x {size})
+                        ({quantity}x {size}){" "}
+                        <TouchableOpacity
+                          onPress={() =>
+                            removerItemCarrinho(
+                              usuario.idUsers,
+                              cartItem.pizza.idPizza,
+                              size
+                            )
+                          }
+                        >
+                          <Text style={{ color: "#FFF" }}>Remover</Text>
+                        </TouchableOpacity>
                       </Text>
                     )
                   )}
                 </SafeAreaView>
                 <SafeAreaView style={styles.pizzaInfoQtArea}>
                   <Text style={styles.pizzaInfoQt}>
-                    R${" "}
-                    {Object.values(cartItem.valortotalItem)
-                      .reduce((a, b) => a + b, 0)
-                      .toFixed(2)}
+                    R$ {calcularValorTotalItem(cartItem.valortotalItem)}
                   </Text>
                 </SafeAreaView>
               </SafeAreaView>
@@ -143,7 +171,13 @@ const Cart = ({ isVisible, onClose }) => {
             <Text style={styles.cartTotalItemText}>Total:</Text>
             <Text style={styles.cartTotalItemValue}>R$ {total.toFixed(2)}</Text>
           </SafeAreaView>
-          <TouchableOpacity style={styles.cartFinalizar}>
+          <TouchableOpacity
+            style={styles.cartFinalizar}
+            onPress={() => {
+              handleModalClose();
+              navigation.navigate("AguardandoPagamento");
+            }}
+          >
             <Text style={{ fontWeight: "bold", fontSize: 18 }}>
               Fazer pagamento
             </Text>

@@ -35,9 +35,9 @@ const PizzaItem = ({ pizza, closeModal }) => {
     setQuantity(1); // Redefinindo a quantidade da pizza conforme eu altero o tamanho da PIZZA
   };
 
-  async function addToCart() {
+  async function adicionarAoCarrinho() {
     try {
-      const response = await fetch("http://192.168.0.18:8080/cart/cadastro", {
+      const response = await fetch("http://192.168.1.20:8080/cart/cadastro", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -110,7 +110,7 @@ const PizzaItem = ({ pizza, closeModal }) => {
             </View>
           </View>
         </View>
-        <TouchableOpacity style={styles.pizzaInfoAddButton} onPress={addToCart}>
+        <TouchableOpacity style={styles.pizzaInfoAddButton} onPress={adicionarAoCarrinho}>
           <Text style={styles.pizzaInfoAddButtonText}>
             Adicionar ao carrinho
           </Text>

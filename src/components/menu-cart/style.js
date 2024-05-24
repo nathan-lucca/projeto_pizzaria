@@ -18,7 +18,7 @@ const styles = StyleSheet.create({
     marginBottom: 5,
   },
   pizzaLabel: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     color: "#FFF",
     marginBottom: 6,
@@ -81,7 +81,7 @@ const styles = StyleSheet.create({
     color: "white",
   },
   pizzaInfoQt: {
-    fontSize: 20,
+    fontSize: 18,
     fontWeight: "bold",
     padding: 5,
     color: "#000",

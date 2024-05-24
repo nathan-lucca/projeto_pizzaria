@@ -4,7 +4,7 @@ import styles from "./style";
 import { useNavigation } from "@react-navigation/native";
 import { SafeAreaView } from "react-native-safe-area-context";
 
-const HomeScreen = () => {
+const AguardandoPagamento = () => {
   const navigation = useNavigation();
 
   return (
@@ -21,7 +21,7 @@ const HomeScreen = () => {
       </Text>
 
       <Image
-        source={require("../assets/imgs/LOGO.png")} // modificar ao decorrer do projeto
+        source={require("../../../../assets/images/LOGO.png")} // modificar ao decorrer do projeto
         style={styles.image}
       ></Image>
       <Text style={styles.chavepix}> Chave pix: 138.182.xxx-xx</Text>
@@ -48,4 +48,4 @@ const HomeScreen = () => {
   );
 };
 
-export default HomeScreen;
+export default AguardandoPagamento;

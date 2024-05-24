@@ -17,7 +17,7 @@ export default function Header() {
       .then((data) => {
         setUsuario(data);
         setInterval(() => {
-          fetchCartCount(data.idUsers);
+          atualizarQuantiaCarrinho(data.idUsers);
         }, 1000);
       })
       .catch((err) => {
@@ -25,14 +25,14 @@ export default function Header() {
       });
   }, []);
 
-  const fetchCartCount = async (userId) => {
+  const atualizarQuantiaCarrinho = async (userId) => {
     if (!userId) {
       return;
     }
 
     try {
       const response = await fetch(
-        `http://192.168.0.18:8080/cart/listar/${Number(userId)}`,
+        `http://192.168.1.20:8080/cart/listar/${Number(userId)}`,
         {
           method: "GET",
           headers: {
@@ -62,24 +62,26 @@ export default function Header() {
 
   return (
     <>
-    <StatusBar />
-    <SafeAreaView>
-      <View style={styles.header}>
-        <View style={styles.logoHeader} onPress={toggleCart}>
-          <Image
-            source={require("../../../assets/images/LOGO.png")}
-            style={styles.logo}
-          ></Image>
-          <Text style={styles.logoText}>Pizzaria dos Monkeys</Text>
-        </View>
+      <StatusBar />
+      <SafeAreaView>
+        <View style={styles.header}>
+          <View style={styles.logoHeader} onPress={toggleCart}>
+            <Image
+              source={require("../../../assets/images/LOGO.png")}
+              style={styles.logo}
+            ></Image>
+            <Text style={styles.logoText}>Pizzaria dos Monkeys</Text>
+          </View>
 
-        <TouchableOpacity style={styles.menuOpener} onPress={toggleCart}>
-          <Text style={styles.cartCount}>{cartCount}</Text>
-          <Text>🛒</Text>
-        </TouchableOpacity>
-      </View>
-      {shouldDisplayCart && <Cart isVisible={isCartOpen} onClose={closeCart} />}
-    </SafeAreaView>
+          <TouchableOpacity style={styles.menuOpener} onPress={toggleCart}>
+            <Text style={styles.cartCount}>{cartCount}</Text>
+            <Text>🛒</Text>
+          </TouchableOpacity>
+        </View>
+        {shouldDisplayCart && (
+          <Cart isVisible={isCartOpen} onClose={closeCart} />
+        )}
+      </SafeAreaView>
     </>
   );
 }
