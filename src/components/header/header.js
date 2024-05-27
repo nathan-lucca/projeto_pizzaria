@@ -32,7 +32,11 @@ export default function Header() {
     
     try {
       const response = await fetch(
+<<<<<<< HEAD
         `http://10.0.0.187:8080/cart/listar/${Number(userId)}`,
+=======
+        `http://192.168.100.14:8080/cart/listar/${Number(userId)}`,
+>>>>>>> f2ec9adae0f32b57955657266ce5b972d1245480
         {
           method: "GET",
           headers: {

@@ -1,5 +1,4 @@
 // No seu componente Endereco.js
-
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";
@@ -27,12 +26,11 @@ export default function Endereco() {
         Para continuar, informe o endereço da entrega
       </Text>
 
-   
       <View style={styles.gifContainer}>
         <Animatable.Image
           animation="flipInY"
           source={require("../../../../assets/images/motoboy2.gif")}
-          style={{ width: "20%", marginTop: "-55%"}}
+          style={{ width: "20%", marginTop: "-55%" }}
           resizeMode="contain"
         />
       </View>

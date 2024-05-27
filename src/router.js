@@ -34,6 +34,7 @@ function TabNavigator() {
         component={Home}
         options={{
           headerShown: false,
+          name: "Início",
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
               name={focused ? "home" : "home-outline"}
@@ -48,6 +49,7 @@ function TabNavigator() {
         component={Historico}
         options={{
           headerShown: false,
+          name: "Histórico",
           tabBarIcon: ({ color, size, focused }) => (
             <Ionicons
               name={focused ? "receipt" : "receipt-outline"}

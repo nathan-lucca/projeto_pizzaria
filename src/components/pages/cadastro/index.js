@@ -21,10 +21,21 @@ export default function Cadastro() {
   const [senha, setSenha] = useState("");
   const [isTirarfoco, setTirarfoco] = useState(false);
 
+  function limparCampos() {
+    setName("");
+    setCpf("");
+    setSenha("");
+    setTirarfoco(false);
+  }
+
   async function realizarCadastro() {
     try {
       const response = await fetch(
+<<<<<<< HEAD
         `http://10.0.0.187:8080/usuario/cadastro`,
+=======
+        `http://192.168.100.14:8080/usuario/cadastro`,
+>>>>>>> f2ec9adae0f32b57955657266ce5b972d1245480
         {
           method: "POST",
           headers: {
@@ -46,6 +57,8 @@ export default function Cadastro() {
           {
             text: "OK",
             onPress: () => {
+              limparCampos();
+
               navigation.navigate("Login");
             },
           },

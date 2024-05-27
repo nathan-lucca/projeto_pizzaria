@@ -1,28 +1,48 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import {
   Text,
-  TextInput,
   View,
   Image,
   Alert,
-  Dimensions,
   TouchableOpacity,
   SafeAreaView,
 } from "react-native";
 import * as ImagePicker from "expo-image-picker";
+import * as FileSystem from "expo-file-system";
 import { Ionicons } from "@expo/vector-icons";
 
-const { width } = Dimensions.get("window"); // Obtém a largura da janela
-
 import styles from "./style.js";
+import { useNavigation } from "@react-navigation/native";
 
 export default function Perfil() {
+  const navigation = useNavigation();
+
   const [selectedImage, setSelectedImage] = useState(
     require("../../../../assets/images/perfil11.png")
   );
 
-  const [nome, setNome] = useState("");
-  const [cpf, setCpf] = useState("");
+  const [usuario, setUsuario] = useState({});
+  const [contadorImagem, setContadorImagem] = useState(0);
+
+  useEffect(() => {
+    global.storage
+      .load({
+        key: "infosUsuario",
+      })
+      .then((data) => {
+        setUsuario(data);
+        setInterval(() => {
+          if (data.imagemUsers) {
+            setSelectedImage({
+              uri: `data:image/jpeg;base64,${data.imagemUsers}`,
+            });
+          }
+        }, 1000);
+      })
+      .catch((err) => {
+        console.warn(err.message);
+      });
+  }, [contadorImagem]);
 
   const pickImage = async () => {
     const permissionResult =
@@ -44,10 +64,49 @@ export default function Perfil() {
     });
 
     if (!result.cancelled) {
-      console.log(result.assets[0].uri);
-      setSelectedImage({ uri: result.assets[0].uri });
+      const base64Image = await FileSystem.readAsStringAsync(
+        result.assets[0].uri,
+        {
+          encoding: FileSystem.EncodingType.Base64,
+        }
+      );
+
+      await fetch(
+        `http://192.168.100.14:8080/usuario/trocar_imagem/${Number(
+          usuario.idUsers
+        )}`,
+        {
+          method: "PUT",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            imagem: base64Image,
+          }),
+        }
+      )
+        .then(() => {
+          setSelectedImage({ uri: result.assets[0].uri });
+          setContadorImagem((prevCounter) => prevCounter + 1);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     }
   };
+
+  async function sair() {
+    global.storage
+      .remove({
+        key: "infosUsuario",
+      })
+      .then(() => {
+        navigation.navigate("Login");
+      })
+      .catch((err) => {
+        console.warn(err.message);
+      });
+  }
 
   return (
     <SafeAreaView style={styles.container}>
@@ -62,21 +121,15 @@ export default function Perfil() {
         <Text style={styles.subtitle}>Meus Dados</Text>
 
         <Text style={styles.label}>Nome</Text>
-        <TextInput
-          style={styles.input}
-          value={nome}
-          onChangeText={setNome}
-          placeholder="Digite seu nome"
-        />
+        <Text style={styles.input}>{usuario.nomeUsers}</Text>
 
         <Text style={styles.label}>CPF</Text>
-        <TextInput
-          style={styles.input}
-          value={cpf}
-          onChangeText={setCpf}
-          placeholder="Digite seu CPF"
-        />
+        <Text style={styles.input}>{usuario.cpfUsers}</Text>
       </View>
+
+      <TouchableOpacity style={styles.buttonSair} onPress={() => sair()}>
+        <Text style={styles.textSair}>Sair</Text>
+      </TouchableOpacity>
     </SafeAreaView>
   );
 }

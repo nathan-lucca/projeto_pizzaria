@@ -1,12 +1,11 @@
 import { StyleSheet, Dimensions } from "react-native";
 
-const windowWidth = Dimensions.get('window').width;
-const windowHeight = Dimensions.get('window').height;
+const windowHeight = Dimensions.get("window").height;
 
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: "white"
+    backgroundColor: "white",
   },
   containerForm: {
     marginTop: "3%",
@@ -42,7 +41,7 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     alignSelf: "flex-start",
     fontSize: 18,
-    marginTop: windowHeight * 0.10, // Ajuste o valor conforme necessário
+    marginTop: windowHeight * 0.1, // Ajuste o valor conforme necessário
   },
   button: {
     backgroundColor: "green",
@@ -65,16 +64,16 @@ const styles = StyleSheet.create({
     textAlign: "center",
     marginTop: 26,
   },
-  T2:{
+  T2: {
     textAlign: "center",
     fontWeight: "bold",
     color: "red",
   },
-  gifContainer:{
-    alignItems:"center",
+  gifContainer: {
+    alignItems: "center",
     marginTop: -windowHeight * 0.05, // Ajuste o valor conforme necessário
     marginBottom: -350, // Ajuste o valor conforme necessário
-  }
+  },
 });
 
 export default styles;
