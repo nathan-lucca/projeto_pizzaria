@@ -33,12 +33,12 @@ const Cart = ({ isVisible, onClose }) => {
 
     try {
       const response = await fetch(
-        `http://192.168.1.20:8080/cart/listar/${Number(userId)}`
+        `http://192.168.100.14:8080/cart/listar/${Number(userId)}`
       );
 
-      if (!response.ok) {
-        throw new Error("Erro ao listar itens do carrinho");
-      }
+      // if (!response.ok) {
+      //   throw new Error("Erro ao listar itens do carrinho");
+      // }
 
       const cartItems = await response.json();
 
@@ -78,7 +78,8 @@ const Cart = ({ isVisible, onClose }) => {
         )
       );
     } catch (error) {
-      console.error("Erro ao listar itens do carrinho:", error);
+      // console.error("Erro ao listar itens do carrinho:", error);
+      return;
     }
   };
 
@@ -89,7 +90,7 @@ const Cart = ({ isVisible, onClose }) => {
   const removerItemCarrinho = async (userId, pizzaId, tamanho) => {
     try {
       const response = await fetch(
-        `http://192.168.1.20:8080/cart/remover/${userId}/${pizzaId}/${tamanho}`,
+        `http://192.168.100.14:8080/cart/remover/${userId}/${pizzaId}/${tamanho}`,
         {
           method: "DELETE",
         }
@@ -98,10 +99,12 @@ const Cart = ({ isVisible, onClose }) => {
       if (response.ok) {
         atualizarItensCarrinho(userId); // Atualizar os itens do carrinho
       } else {
-        throw new Error("Erro ao remover item do carrinho");
+        // throw new Error("Erro ao remover item do carrinho");
+        return;
       }
     } catch (error) {
-      console.error("Erro ao remover item do carrinho:", error);
+      // console.error("Erro ao remover item do carrinho:", error);
+      return;
     }
   };
 

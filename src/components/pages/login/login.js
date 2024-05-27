@@ -21,9 +21,15 @@ export default function Login() {
   const [senha, setSenha] = useState("");
   const [isTirarfoco, setTirarfoco] = useState(false);
 
+  function limparCampos() {
+    setCpf("");
+    setSenha("");
+    setTirarfoco(false);
+  }
+
   async function realizarLogin() {
     try {
-      const response = await fetch(`http://192.168.1.20:8080/usuario/login`, {
+      const response = await fetch(`http://192.168.100.14:8080/usuario/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -41,6 +47,8 @@ export default function Login() {
           {
             text: "OK",
             onPress: () => {
+              limparCampos();
+
               const infos_usuario = data.dados;
 
               global.storage.save({

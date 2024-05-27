@@ -19,10 +19,16 @@ export default function NovaSenha() {
   const [senha, setSenha] = useState("");
   const [isTirarfoco, setTirarfoco] = useState(false);
 
+  function limparCampos() {
+    setCpf("");
+    setSenha("");
+    setTirarfoco(false);
+  }
+
   async function realizarTrocaSenha() {
     try {
       const response = await fetch(
-        `http://192.168.1.20:8080/usuario/trocar_senha`,
+        `http://192.168.100.14:8080/usuario/trocar_senha`,
         {
           method: "PUT",
           headers: {
@@ -43,6 +49,8 @@ export default function NovaSenha() {
           {
             text: "OK",
             onPress: () => {
+              limparCampos();
+
               navigation.navigate("Login");
             },
           },

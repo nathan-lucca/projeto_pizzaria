@@ -20,10 +20,10 @@ const styles = StyleSheet.create({
     shadowOpacity: 0.25,
     shadowRadius: 3.84,
     elevation: 5,
-    width: "100%", // Ocupa 100% da largura da janela
-    maxWidth: 400, // Limite máximo de largura
+    width: "100%",
+    maxWidth: 400,
     marginHorizontal: 10,
-    marginBottom: 20, // Adiciona margem inferior para separar os campos de perfil dos dados
+    marginBottom: 20,
   },
   image: {
     width: 150,
@@ -37,14 +37,14 @@ const styles = StyleSheet.create({
     fontWeight: "bold",
     marginBottom: 10,
     color: "#FBB039",
-    textAlign: "center", // Alinha ao centro
+    textAlign: "center",
   },
   subtitle: {
     fontSize: 20,
     fontWeight: "bold",
     marginTop: 20,
     marginBottom: 10,
-    textAlign: "center", // Alinha ao centro
+    textAlign: "center",
   },
   label: {
     fontSize: 16,
@@ -56,12 +56,31 @@ const styles = StyleSheet.create({
     borderRadius: 5,
     padding: 12,
     marginBottom: 20,
-    width: "100%", // Ocupa 100% da largura do container
+    width: "100%",
   },
   profileDetails: {
     width: "100%",
     paddingHorizontal: 20,
   },
+  buttonSair: {
+    backgroundColor: "red",
+    borderRadius: 5,
+    padding: 12,
+    marginTop: 50,
+    marginBottom: 20,
+    width: "50%",
+    textAlign: "center",
+    alignContent: "center",
+    alignItems: "center",
+  },
+  textSair: {
+    color: "#fff",
+    fontSize: 20,
+    fontWeight: "bold",
+    textAlign: "center",
+    alignContent: "center",
+    alignItems: "center",
+  }
 });
 
 export default styles;
