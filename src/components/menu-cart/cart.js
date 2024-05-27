@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Text, TouchableOpacity, Image, Modal, ScrollView } from "react-native";
-import styles from "./style.js";
-import { SafeAreaView } from "react-native-safe-area-context";
 import { useNavigation } from "@react-navigation/native";
+import React, { useEffect, useState } from "react";
+import { Image, Modal, ScrollView, Text, TouchableOpacity } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
+import styles from "./style.js";
 
 const Cart = ({ isVisible, onClose }) => {
   const navigation = useNavigation();
@@ -33,7 +33,7 @@ const Cart = ({ isVisible, onClose }) => {
 
     try {
       const response = await fetch(
-        `http://192.168.1.20:8080/cart/listar/${Number(userId)}`
+        `http://10.0.0.187:8080/cart/listar/${Number(userId)}`
       );
 
       if (!response.ok) {
@@ -175,11 +175,11 @@ const Cart = ({ isVisible, onClose }) => {
             style={styles.cartFinalizar}
             onPress={() => {
               handleModalClose();
-              navigation.navigate("AguardandoPagamento");
+              navigation.navigate("Endereco");
             }}
           >
             <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-              Fazer pagamento
+              Continuar
             </Text>
           </TouchableOpacity>
         </SafeAreaView>

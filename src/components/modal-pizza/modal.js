@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from "react";
-import { View, Text, Image, TouchableOpacity } from "react-native";
+import { Image, Text, TouchableOpacity, View } from "react-native";
 import styles from "./style.js";
 
 const PizzaItem = ({ pizza, closeModal }) => {
@@ -37,7 +37,7 @@ const PizzaItem = ({ pizza, closeModal }) => {
 
   async function adicionarAoCarrinho() {
     try {
-      const response = await fetch("http://192.168.1.20:8080/cart/cadastro", {
+      const response = await fetch("http://10.0.0.187:8080/cart/cadastro", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

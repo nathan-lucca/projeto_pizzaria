@@ -2,7 +2,7 @@ import React from "react";
 import { View, Text, TouchableOpacity } from "react-native";
 import * as Animatable from "react-native-animatable";
 import { useNavigation } from "@react-navigation/native";
-import styles from "./style";
+import styles from "./style.js";
 
 export default function BemVindo() {
   const navigation = useNavigation();

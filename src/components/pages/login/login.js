@@ -1,18 +1,17 @@
-import React from "react";
+import { useNavigation } from "@react-navigation/native";
+import React, { useState } from "react";
 import {
-  Text,
-  View,
+  Alert,
   ImageBackground,
+  Pressable,
+  Text,
   TextInput,
   TouchableOpacity,
-  Pressable,
-  Alert,
+  View,
 } from "react-native";
-import { useState } from "react";
-import styles from "./style";
-import { useNavigation } from "@react-navigation/native";
 import * as Animatable from "react-native-animatable";
 import { formatCpf } from "../../../functions/formatCpf";
+import styles from "./style";
 
 export default function Login() {
   const navigation = useNavigation();
@@ -23,7 +22,7 @@ export default function Login() {
 
   async function realizarLogin() {
     try {
-      const response = await fetch(`http://192.168.1.20:8080/usuario/login`, {
+      const response = await fetch(`http://10.0.0.187:8080/usuario/login`, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",

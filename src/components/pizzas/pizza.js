@@ -1,16 +1,16 @@
 import React, { useEffect, useState } from "react";
 import {
-  View,
-  Text,
-  Image,
-  ScrollView,
-  TouchableWithoutFeedback,
-  Modal,
   Alert,
+  Image,
+  Modal,
+  ScrollView,
+  Text,
+  TouchableWithoutFeedback,
+  View,
 } from "react-native";
-import styles from "./style.js";
-import PizzaItem from "../modal-pizza/modal.js";
 import { SafeAreaView } from "react-native-safe-area-context";
+import PizzaItem from "../modal-pizza/modal.js";
+import styles from "./style.js";
 
 export default function Pizzas() {
   const [selectedPizza, setSelectedPizza] = useState(null);
@@ -19,7 +19,7 @@ export default function Pizzas() {
 
   async function arrayPizzas() {
     try {
-      const response = await fetch(`http://192.168.1.20:8080/pizza/listar`, {
+      const response = await fetch(`http://10.0.0.187:8080/pizza/listar`, {
         method: "GET",
         headers: {
           "Content-Type": "application/json",

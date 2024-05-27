@@ -9,6 +9,7 @@ import Cadastro from "../src/components/pages/cadastro";
 import NovaSenha from "../src/components/pages/novasenha";
 import Perfil from "../src/components/pages/perfil";
 import Historico from "../src/components/pages/historico";
+import Endereco from "../src/components/pages/endereco/index.js";
 import AguardandoPagamento from "./components/pages/aguardandopagamento/index.js";
 
 const Stack = createNativeStackNavigator();
@@ -102,6 +103,13 @@ export default function Routes() {
         component={TabNavigator}
         options={{ headerShown: false }}
       />
+
+      <Stack.Screen
+        name="Endereco"
+        component={Endereco}
+        options={{ headerShown: false }}
+      />
+
       <Stack.Screen
         name="AguardandoPagamento"
         component={AguardandoPagamento}

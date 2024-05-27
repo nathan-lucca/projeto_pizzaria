@@ -1,8 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { View, Text, TouchableOpacity, StatusBar, Image } from "react-native";
+import React, { useEffect, useState } from "react";
+import { Image, StatusBar, Text, TouchableOpacity, View } from "react-native";
+import { SafeAreaView } from "react-native-safe-area-context";
 import Cart from "../menu-cart/cart.js";
 import styles from "./style.js";
-import { SafeAreaView } from "react-native-safe-area-context";
 
 export default function Header() {
   const [cartCount, setCartCount] = useState(0);
@@ -29,10 +29,10 @@ export default function Header() {
     if (!userId) {
       return;
     }
-
+    
     try {
       const response = await fetch(
-        `http://192.168.1.20:8080/cart/listar/${Number(userId)}`,
+        `http://10.0.0.187:8080/cart/listar/${Number(userId)}`,
         {
           method: "GET",
           headers: {

@@ -1,12 +1,12 @@
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import {
+  Alert,
+  ImageBackground,
   Text,
   TextInput,
   TouchableOpacity,
   View,
-  ImageBackground,
-  Alert,
 } from "react-native";
 import * as Animatable from "react-native-animatable";
 
@@ -24,7 +24,7 @@ export default function Cadastro() {
   async function realizarCadastro() {
     try {
       const response = await fetch(
-        `http://192.168.1.20:8080/usuario/cadastro`,
+        `http://10.0.0.187:8080/usuario/cadastro`,
         {
           method: "POST",
           headers: {
