@@ -1,49 +1,47 @@
-import { StyleSheet } from "react-native";
-
-const styles = StyleSheet.create({
+const styles = {
   container: {
-    flex: 1,
+      flex: 1,
+      justifyContent: "center",
+      alignItems: "center",
+      padding: 16,
   },
   logo: {
-    marginBottom: 25,
-    marginTop: 25,
-    height: 150,
-    width: 150,
-    marginTop: 60,
+      width: 150,
+      height: 150,
+      marginBottom: 16,
+      marginTop: 20,
   },
   title: {
-    textAlign: "center",
-    fontSize: 25,
+      fontSize: 24,
+      fontWeight: "bold",
+      marginBottom: 16,
   },
   text: {
-    textAlign: "center",
-    marginTop: 10,
-    fontSize: 18,
-    color: "#F29829",
-  },
-  chavepix: {
-    textAlign: "center",
-    fontSize: 16,
-  },
-  container: {
-    flex: 1,
-    justifyContent: "center",
-    alignItems: "center",
-  },
-  buttonContainer: {
-    flexDirection: "row",
-    justifyContent: "space-between",
-    width: "80%",
-  },
-  button: {
-    flex: 1,
-    marginHorizontal: 5,
-    marginBottom: 20,
+      fontSize: 18,
+      textAlign: "center",
+      color: "#FFA638",
   },
   image: {
-    height: 250,
-    width: 250,
+      width: 250,
+      height: 250,
   },
-});
-
-export default styles;
+  chavepix: {
+      fontSize: 16,
+  },
+  buttonContainer: {
+      flexDirection: "row",
+      justifyContent: "space-between",
+      marginBottom: 18,
+  },
+  button: {
+      marginHorizontal: 8,
+  },
+  selectedPdfText: {
+      fontSize: 12,
+      color: "black",
+      fontWeight: "bold",
+  },
+  };
+  
+  export default styles;
+  
