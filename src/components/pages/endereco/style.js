@@ -71,8 +71,8 @@ const styles = StyleSheet.create({
   },
   gifContainer: {
     alignItems: "center",
-    marginTop: -windowHeight * 0.05, // Ajuste o valor conforme necessário
-    marginBottom: -350, // Ajuste o valor conforme necessário
+    marginTop: -windowHeight * 0.05,
+    marginBottom: -350,
   },
 });
 

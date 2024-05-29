@@ -28,11 +28,7 @@ export default function Login() {
 
   async function realizarLogin() {
     try {
-<<<<<<< HEAD
-      const response = await fetch(`http://10.0.0.187:8080/usuario/login`, {
-=======
       const response = await fetch(`http://192.168.100.14:8080/usuario/login`, {
->>>>>>> f2ec9adae0f32b57955657266ce5b972d1245480
         method: "POST",
         headers: {
           "Content-Type": "application/json",

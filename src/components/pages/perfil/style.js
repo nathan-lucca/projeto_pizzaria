@@ -80,7 +80,7 @@ const styles = StyleSheet.create({
     textAlign: "center",
     alignContent: "center",
     alignItems: "center",
-  }
+  },
 });
 
 export default styles;

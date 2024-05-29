@@ -8,6 +8,8 @@ export default function Header() {
   const [cartCount, setCartCount] = useState(0);
   const [isCartOpen, setIsCartOpen] = useState(false);
   const [usuario, setUsuario] = useState({});
+  const [orderId, setOrderId] = useState(null);
+  const [isFetchingOrderId, setIsFetchingOrderId] = useState(false);
 
   useEffect(() => {
     global.storage
@@ -29,14 +31,10 @@ export default function Header() {
     if (!userId) {
       return;
     }
-    
+
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        `http://10.0.0.187:8080/cart/listar/${Number(userId)}`,
-=======
         `http://192.168.100.14:8080/cart/listar/${Number(userId)}`,
->>>>>>> f2ec9adae0f32b57955657266ce5b972d1245480
         {
           method: "GET",
           headers: {
@@ -54,8 +52,37 @@ export default function Header() {
     }
   };
 
-  const toggleCart = () => {
+  const toggleCart = async () => {
     setIsCartOpen(!isCartOpen);
+
+    if (!isCartOpen && !isFetchingOrderId) {
+      setIsFetchingOrderId(true);
+
+      try {
+        const response = await fetch(
+          `http://192.168.100.14:8080/order/user/${usuario.idUsers}`,
+          {
+            method: "GET",
+            headers: {
+              "Content-Type": "application/json",
+            },
+          }
+        );
+
+        const data = await response.json();
+
+        for (var i = 0; i < data.length; i++) {
+          if (data[i].statusPedido === "Pendente") {
+            setOrderId(data[i].idOrders);
+            break;
+          }
+        }
+      } catch (error) {
+        console.error("Erro ao buscar o ID do pedido:", error);
+      } finally {
+        setIsFetchingOrderId(false);
+      }
+    }
   };
 
   const closeCart = () => {
@@ -83,7 +110,7 @@ export default function Header() {
           </TouchableOpacity>
         </View>
         {shouldDisplayCart && (
-          <Cart isVisible={isCartOpen} onClose={closeCart} />
+          <Cart isVisible={isCartOpen} onClose={closeCart} orderId={orderId} />
         )}
       </SafeAreaView>
     </>

@@ -1,4 +1,3 @@
-// No seu componente Endereco.js
 import { useNavigation } from "@react-navigation/native";
 import React, { useState } from "react";
 import { Text, TextInput, TouchableOpacity, View } from "react-native";

@@ -1,8 +1,8 @@
 import React from "react";
-import { Text, View, Button, StyleSheet, Image } from "react-native";
+import { Text, View, Button, Image } from "react-native";
 import { useNavigation } from "@react-navigation/native";
 
-import styles from './style.js';
+import styles from "./style.js";
 
 const HomeScreen = () => {
   const navigation = useNavigation();
@@ -23,9 +23,9 @@ const HomeScreen = () => {
 
       <View style={styles.buttonContainer}>
         <Button
-          title="Abrir o historico "
+          title="Abrir o Histórico"
           color={"#FFA638"}
-          onPress={() => navigation.navigate("Historico de pedidos")}
+          onPress={() => navigation.navigate("HistoricoTab")}
         />
       </View>
     </View>

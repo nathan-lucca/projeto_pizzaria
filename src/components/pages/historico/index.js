@@ -1,98 +1,100 @@
 import React, { useState, useEffect } from "react";
-import { View, Text, FlatList, ActivityIndicator, Image } from "react-native";
+import {
+  View,
+  Text,
+  FlatList,
+  Image,
+  Modal,
+  TouchableOpacity,
+  ScrollView,
+} from "react-native";
 import styles from "./style";
-import PizzaHawaiian from "../../../../assets/images/pizzas/Hawaiian_Pizzaa.png";
-import PizzaCalabresa from "../../../../assets/images/pizzas/pizza_calabresa.png";
-import PizzaMargarita from "../../../../assets/images/pizzas/Pizza_Margarita.png";
-import PizzaPeperon from "../../../../assets/images/pizzas/Pizza_Peperoni.png";
 import { SafeAreaView } from "react-native-safe-area-context";
+import moment from "moment";
 
 const HistoryScreen = () => {
+  moment.locale("pt-br");
+
   const [historico, setHistorico] = useState([]);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState(null);
+  const [modalVisible, setModalVisible] = useState(false);
+  const [selectedOrder, setSelectedOrder] = useState(null);
+  const [usuario, setUsuario] = useState({});
 
   useEffect(() => {
-    const fetchHistorico = async () => {
-      try {
-        // simulando um delay de carregamento
-        await new Promise((resolve) => setTimeout(resolve, 1000));
-
-        // ids das pizzas
-        const data = [
-          {
-            id: 1,
-            type: "Chocolate",
-            price: 21.5,
-            quantity: 2,
-            size: "(P)",
-            image: PizzaHawaiian,
-          },
-          {
-            id: 2,
-            type: "Calabresa",
-            price: 18.99,
-            quantity: 1,
-            size: "(M)",
-            image: PizzaCalabresa,
-          },
-          {
-            id: 3,
-            type: "Bacon",
-            price: 22.0,
-            quantity: 3,
-            size: "(G)",
-            image: PizzaMargarita,
-          },
-          {
-            id: 4,
-            type: "Portuguesa",
-            price: 22.0,
-            quantity: 8,
-            size: "(G)",
-            image: PizzaPeperon,
-          },
-        ];
-        // caso houver erro aparecera essa msg
-        setHistorico(data);
-      } catch (error) {
-        setError("Algo deu errado");
-      } finally {
-        setLoading(false);
-      }
+    const dadosUsuario = async () => {
+      global.storage
+        .load({
+          key: "infosUsuario",
+        })
+        .then((data) => {
+          setUsuario(data);
+          setInterval(() => {
+            fetchHistorico(data.idUsers);
+          }, 1000);
+        })
+        .catch((err) => {
+          console.warn(err.message);
+        });
     };
 
-    fetchHistorico();
+    dadosUsuario();
   }, []);
 
+  const fetchHistorico = async (userId) => {
+    if (!userId) {
+      return;
+    }
+
+    try {
+      const response = await fetch(
+        `http://192.168.100.14:8080/order/user/${Number(userId)}`
+      );
+      const data = await response.json();
+
+      setHistorico(data);
+    } catch (error) {
+      console.error(error);
+    }
+  };
+
+  const navigateToOrderDetails = (order) => {
+    setSelectedOrder(order);
+    setModalVisible(true);
+  };
+
   const renderItem = ({ item }) => (
-    <View style={styles.card}>
-      <Image source={item.image} style={styles.image} />
-      <View style={styles.info}>
-        <Text style={styles.title}>Pizza: {item.type}</Text>
-        <Text>Quantidade: {item.quantity}</Text>
-        <Text>Tamanho: {item.size}</Text>
-        <Text style={styles.price}>Preço: R${item.price.toFixed(2)}</Text>
+    <TouchableOpacity onPress={() => navigateToOrderDetails(item)}>
+      <View style={styles.card}>
+        <View style={styles.info}>
+          <Text style={styles.title}>Pedido ID: {item.idOrders}</Text>
+          <Text>
+            Data do Pedido: {moment(item.dataPedido).format("DD/MM/YYYY")}
+          </Text>
+          <Text>Status do Pedido: {item.statusPedido}</Text>
+        </View>
       </View>
-    </View>
+    </TouchableOpacity>
   );
 
-  if (loading) {
-    // tela de carregamento
-    return (
-      <View style={styles.loadingContainer}>
-        <ActivityIndicator size="large" color="#f7bb06" />
-      </View>
-    );
-  }
+  const groupOrderItemsByPizza = (orderItems) => {
+    const groupedItems = {};
 
-  if (error) {
-    return (
-      <View style={styles.errorContainer}>
-        <Text style={styles.errorText}>{error}</Text>
-      </View>
-    );
-  }
+    orderItems.forEach((item) => {
+      if (!groupedItems[item.pizza.nomePizza]) {
+        groupedItems[item.pizza.nomePizza] = {
+          pizza: item.pizza,
+          sizes: [],
+        };
+      }
+      groupedItems[item.pizza.nomePizza].sizes.push({
+        tamanho: item.tamanhoPizza,
+        quantidade: item.quantPizza,
+        valor: item.valortotalItem,
+      });
+    });
+
+    return Object.values(groupedItems);
+  };
 
   return (
     <SafeAreaView style={styles.container}>
@@ -102,9 +104,77 @@ const HistoryScreen = () => {
           showsVerticalScrollIndicator={false}
           data={historico}
           renderItem={renderItem}
-          keyExtractor={(item) => item.id.toString()}
+          keyExtractor={(item) => item.idOrders.toString()}
         />
       </View>
+      <Modal
+        animationType="slide"
+        transparent={true}
+        visible={modalVisible}
+        onRequestClose={() => {
+          setModalVisible(!modalVisible);
+        }}
+      >
+        <View style={styles.centeredView}>
+          <View style={{ backgroundColor: "#FBB039" }}>
+            <TouchableOpacity onPress={() => setModalVisible(!modalVisible)}>
+              <Text style={{ marginLeft: 15, marginTop: 15, fontSize: 20 }}>
+                ❌
+              </Text>
+            </TouchableOpacity>
+
+            <Text style={styles.modalTitle}>Detalhes do Pedido</Text>
+            <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
+              {selectedOrder && (
+                <>
+                  {groupOrderItemsByPizza(selectedOrder?.orderItems).map(
+                    (groupedItem) => (
+                      <View style={styles.card} key={groupedItem.pizza.idPizza}>
+                        <Image
+                          source={{
+                            uri: `data:image/png;base64,${groupedItem.pizza.imagemPizza}`,
+                          }}
+                          style={styles.imageDetalhe}
+                          resizeMode="contain"
+                        />
+                        <View style={styles.infoDetalhe}>
+                          <Text style={styles.titleDetalhe}>
+                            Pizza: {groupedItem.pizza.nomePizza}
+                            {"\n"}
+                          </Text>
+                          {groupedItem.sizes.map((size, index) => (
+                            <View key={index}>
+                              <Text>
+                                ({size.quantidade}x {size.tamanho}) -{" "}
+                                <Text style={styles.priceDetalhe}>
+                                  R${size.valor.toFixed(2)}
+                                </Text>
+                              </Text>
+                            </View>
+                          ))}
+                        </View>
+                      </View>
+                    )
+                  )}
+                </>
+              )}
+            </ScrollView>
+            <View style={styles.totalDetalhe}>
+              <Text style={styles.totalTextDetalhe}>Total:</Text>
+              <Text style={styles.totalTextValueDetalhe}>
+                R${" "}
+                {selectedOrder?.orderItems
+                  .reduce(
+                    (total, orderItem) =>
+                      total + (orderItem?.valortotalItem || 0),
+                    0
+                  )
+                  .toFixed(2)}
+              </Text>
+            </View>
+          </View>
+        </View>
+      </Modal>
     </SafeAreaView>
   );
 };

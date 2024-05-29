@@ -62,13 +62,15 @@ const styles = StyleSheet.create({
     fontSize: 20,
   },
   cartFinalizar: {
-    width: "100%",
+    textAlign: "center",
+    width: "80%",
     paddingVertical: 20,
     borderRadius: 20,
     backgroundColor: "#FBB039",
-    marginTop: 25,
+    marginBottom: 10,
     alignItems: "center",
     justifyContent: "center",
+    alignSelf: "center",
   },
   pizzaInfoQtArea: {
     flexDirection: "row",

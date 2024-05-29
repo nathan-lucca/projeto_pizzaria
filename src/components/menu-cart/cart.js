@@ -4,7 +4,7 @@ import { Image, Modal, ScrollView, Text, TouchableOpacity } from "react-native";
 import { SafeAreaView } from "react-native-safe-area-context";
 import styles from "./style.js";
 
-const Cart = ({ isVisible, onClose }) => {
+const Cart = ({ isVisible, onClose, orderId }) => {
   const navigation = useNavigation();
   const [total, setTotal] = useState(0);
   const [cartItems, setCartItems] = useState([]);
@@ -33,16 +33,8 @@ const Cart = ({ isVisible, onClose }) => {
 
     try {
       const response = await fetch(
-<<<<<<< HEAD
-        `http://10.0.0.187:8080/cart/listar/${Number(userId)}`
-=======
         `http://192.168.100.14:8080/cart/listar/${Number(userId)}`
->>>>>>> f2ec9adae0f32b57955657266ce5b972d1245480
       );
-
-      // if (!response.ok) {
-      //   throw new Error("Erro ao listar itens do carrinho");
-      // }
 
       const cartItems = await response.json();
 
@@ -82,7 +74,6 @@ const Cart = ({ isVisible, onClose }) => {
         )
       );
     } catch (error) {
-      // console.error("Erro ao listar itens do carrinho:", error);
       return;
     }
   };
@@ -103,11 +94,9 @@ const Cart = ({ isVisible, onClose }) => {
       if (response.ok) {
         atualizarItensCarrinho(userId); // Atualizar os itens do carrinho
       } else {
-        // throw new Error("Erro ao remover item do carrinho");
         return;
       }
     } catch (error) {
-      // console.error("Erro ao remover item do carrinho:", error);
       return;
     }
   };
@@ -118,6 +107,32 @@ const Cart = ({ isVisible, onClose }) => {
       .toFixed(2);
   };
 
+  const handleFinalizeOrder = async () => {
+    try {
+      const response = await fetch(
+        "http://192.168.100.14:8080/order/finalizar",
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+          },
+          body: JSON.stringify({
+            ordersId: orderId,
+            userId: usuario.idUsers,
+          }),
+        }
+      );
+
+      if (response.ok) {
+        navigation.navigate("Endereco");
+      } else {
+        console.error("Erro ao finalizar pedido");
+      }
+    } catch (error) {
+      console.error("Erro ao finalizar pedido", error);
+    }
+  };
+
   return (
     <Modal
       visible={isVisible}
@@ -125,15 +140,15 @@ const Cart = ({ isVisible, onClose }) => {
       transparent={true}
       onRequestClose={handleModalClose}
     >
-      <ScrollView>
-        <SafeAreaView style={styles.container}>
-          <TouchableOpacity
-            style={styles.menuCloser}
-            onPress={handleModalClose}
-          >
-            <Text>❌</Text>
-          </TouchableOpacity>
-          <Text style={styles.title}>Seu Carrinho</Text>
+      <SafeAreaView style={styles.container}>
+        <TouchableOpacity
+          style={{ marginLeft: 15, marginTop: 15, fontSize: 25 }}
+          onPress={handleModalClose}
+        >
+          <Text>❌</Text>
+        </TouchableOpacity>
+        <Text style={styles.title}>Seu Carrinho</Text>
+        <ScrollView contentContainerStyle={{ flexGrow: 1 }}>
           <SafeAreaView style={styles.cart}>
             {cartItems.map((cartItem, index) => (
               <SafeAreaView key={index} style={styles.cartItem}>
@@ -174,23 +189,25 @@ const Cart = ({ isVisible, onClose }) => {
               </SafeAreaView>
             ))}
           </SafeAreaView>
-          <SafeAreaView style={styles.cartTotalItem}>
-            <Text style={styles.cartTotalItemText}>Total:</Text>
-            <Text style={styles.cartTotalItemValue}>R$ {total.toFixed(2)}</Text>
-          </SafeAreaView>
-          <TouchableOpacity
-            style={styles.cartFinalizar}
-            onPress={() => {
-              handleModalClose();
-              navigation.navigate("Endereco");
-            }}
-          >
-            <Text style={{ fontWeight: "bold", fontSize: 18 }}>
-              Continuar
-            </Text>
-          </TouchableOpacity>
+        </ScrollView>
+        <SafeAreaView style={styles.cartTotalItem}>
+          <Text style={styles.cartTotalItemText}>Total:</Text>
+          <Text style={styles.cartTotalItemValue}>R$ {total.toFixed(2)}</Text>
         </SafeAreaView>
-      </ScrollView>
+        <TouchableOpacity
+          style={styles.cartFinalizar}
+          onPress={() => {
+            handleModalClose();
+            handleFinalizeOrder();
+          }}
+        >
+          <Text
+            style={{ fontWeight: "bold", fontSize: 18, textAlign: "center" }}
+          >
+            Continuar
+          </Text>
+        </TouchableOpacity>
+      </SafeAreaView>
     </Modal>
   );
 };

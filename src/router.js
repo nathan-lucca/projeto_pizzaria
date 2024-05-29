@@ -11,7 +11,7 @@ import Perfil from "../src/components/pages/perfil";
 import Historico from "../src/components/pages/historico";
 import Endereco from "../src/components/pages/endereco/index.js";
 import AguardandoPagamento from "./components/pages/aguardandopagamento/index.js";
-import PedidoFinalizado from "./components/pages/pedidoFinalizado/index.js"
+import PedidoFinalizado from "./components/pages/pedidoFinalizado/index.js";
 
 const Stack = createNativeStackNavigator();
 const Tab = createBottomTabNavigator();
@@ -106,13 +106,11 @@ export default function Routes() {
         component={TabNavigator}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="Endereco"
         component={Endereco}
         options={{ headerShown: false }}
       />
-
       <Stack.Screen
         name="AguardandoPagamento"
         component={AguardandoPagamento}
@@ -121,6 +119,11 @@ export default function Routes() {
       <Stack.Screen
         name="PedidoFinalizado"
         component={PedidoFinalizado}
+        options={{ headerShown: false }}
+      />
+      <Stack.Screen
+        name="Historico"
+        component={Historico}
         options={{ headerShown: false }}
       />
     </Stack.Navigator>
