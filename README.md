@@ -39,7 +39,7 @@ Para executar o projeto localmente, siga os passos abaixo:
 
 1. Clone o repositório:
    ```bash
-   git clone https://github.com/seu-usuario/pizzaria-dos-monkeys.git
+   git clone https://github.com/nathan-lucca/pizzaria-dos-monkeys.git
    ```
 
 2. Navegue até o diretório do projeto:
@@ -57,7 +57,7 @@ Para executar o projeto localmente, siga os passos abaixo:
 
 5. Execute o aplicativo React Native:
    ```bash
-   npx react-native run-android  # ou run-ios para iOS
+   npx expo start
    ```
 
 ## 📬 Contato
